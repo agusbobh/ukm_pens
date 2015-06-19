@@ -1,0 +1,126 @@
+<?php
+
+if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+class Agenda_model extends Model {
+
+    function Agenda_model() {
+        parent::Model();
+    }
+
+    function get_total($parameter) {
+        if(!empty($parameter)){
+            $this->db->select('count(*) AS Total');
+            $this->db->from('agenda');
+            $this->db->where($parameter);
+            $query = $this->db->get();
+            foreach($query->result() as $row){
+              return $row->Total;
+            }
+            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+        }else{
+            $this->db->select('count(*) AS Total');
+            $this->db->from('agenda');
+            $query = $this->db->get();
+            foreach($query->result() as $row){
+              return $row->Total;
+            }
+            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+        }
+    }
+
+    function insert($data) {
+        $this->db->insert('agenda', $data);
+    }
+
+    function delete($id) {
+        $this->db->where('agenda_id', $id);
+        $this->db->delete('agenda');
+    }
+
+    function update($id, $data) {
+        $this->db->where('agenda_id', $id);
+        $this->db->update('agenda', $data);
+    }
+
+    function get_agenda($id) {
+        /*$this->db->select('agenda.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks');
+        $this->db->from('agenda');
+        $this->db->join('tipenotif', 'agenda.agenda_status = tipenotif.tipe_id');
+        $this->db->where($parameter);
+        $this->db->limit($limit);
+        $query = $this->db->get();
+
+        return $query;
+        */
+        // return ( $query->num_rows > 0 ? $query : 0 );
+
+        $sql = "SELECT agenda.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks
+                FROM agenda JOIN tipenotif ON agenda.agenda_status = tipenotif.tipe_id
+                WHERE ukm_id = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function view_agenda(){
+      /*
+      $result = array();
+      $this->db->select('*');
+      $this->db->from('agenda');
+      $this->db->join('ukm','ukm.ukm_id = agenda.ukm_id');
+      $this->db->order_by('agenda_time','desc');
+      $query =$this->db->get();
+      if($query->num_rows > 0){
+        $result = $query->result();
+      }
+      return $result;
+      */
+      $sql    = "select * from agenda join ukm on ukm.ukm_id = agenda.ukm_id order by agenda_time desc";         //ganti sql sesuai database
+
+      $query = $this->db->query($sql);
+      return $query;
+    }
+
+    function get_daftaragenda($ukm, $start, $rows, $search) {
+
+        $sql = "SELECT
+            `agenda`.`agenda_id` AS ID,
+            `agenda`.`ukm_id` AS UKMid,
+            `ukm`.`ukm_name` AS UKM,
+            `agenda`.`agenda_title` AS Title,
+            `agenda`.`agenda_text` AS Teks,
+            `agenda`.`agenda_time` AS Time,
+            `agenda`.`agenda_timeto` AS Timeto,
+            `agenda`.`agenda_status` AS StatusID,
+            REPLACE(REPLACE(REPLACE(REPLACE(`agenda`.`agenda_status`,'0','Draft'),'1','Publish'),'2','Hapus'),'3','Selesai') AS Status
+        FROM `agenda`
+        INNER JOIN `ukm` ON (`agenda`.`ukm_id` = `ukm`.`ukm_id`)
+        WHERE `agenda`.`ukm_id` = ". $ukm ." AND (`agenda`.`agenda_id` LIKE '%".$search."%'
+                OR `agenda`.`agenda_title` LIKE '%".$search."%'
+                OR `agenda`.`agenda_text` LIKE '%".$search."%'
+                OR REPLACE(REPLACE(REPLACE(REPLACE(`agenda`.`agenda_status`,'0','Draft'),'1','Publish'),'2','Hapus'),'3','Selesai') LIKE '%".$search."%'
+                OR `agenda`.`agenda_time` LIKE '%".$search."%'
+                OR `agenda`.`agenda_timeto` LIKE '%".$search."%')
+        ORDER BY `agenda`.`agenda_id` LIMIT ".$start.",".$rows."";
+
+        return $this->db->query($sql);
+    }
+
+    function get_count_daftaragenda($ukm, $search) {
+
+        $sql = "SELECT
+            COUNT(*) AS Total
+        FROM `agenda`
+        WHERE `agenda`.`ukm_id` = ". $ukm ." AND (`agenda`.`agenda_id` LIKE '%".$search."%'
+                OR `agenda`.`agenda_title` LIKE '%".$search."%'
+                OR `agenda`.`agenda_text` LIKE '%".$search."%'
+                OR REPLACE(REPLACE(REPLACE(REPLACE(`agenda`.`agenda_status`,'0','Draft'),'1','Publish'),'2','Hapus'),'3','Selesai') LIKE '%".$search."%'
+                OR `agenda`.`agenda_time` LIKE '%".$search."%'
+                OR `agenda`.`agenda_timeto` LIKE '%".$search."%')";
+
+        return $this->db->query($sql);
+    }
+
+}
+
+?>
