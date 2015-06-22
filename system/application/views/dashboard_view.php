@@ -288,7 +288,6 @@
                                 <div class="box-body table-responsive no-padding">
                                     <table class="table table-hover">
                                         <tbody>
-                                        
                                         <?php
                                         if(!empty($datanotif)) {
                                           foreach($datanotif as $key) :

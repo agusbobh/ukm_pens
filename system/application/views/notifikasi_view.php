@@ -44,7 +44,7 @@
                                         ?>
                                         <tr style="background:<?php echo $key->NOTIF_READ == 0 ? "#f5f5f5" : "none"; ?>">
                                             <td><span class="label label-<?php echo $key->TIPE_NAMA;?>"><?php echo $key->TEKS ." / " . $key->NOTIF_TIME;?></span> <?php echo substr($key->NOTIF_ACTIVITY,0);?> { <i>dikirim oleh <?php echo $key->USER_NAME;?></i> }.</td>
-                                            <td><button class="btn btn-xs btn-flat <?php echo $key->NOTIF_READ == 0 ? "btn-primary" : "btn-default disabled"; ?>" onclick="modalbacasatu('<?php echo $key->NOTIF_ID?>', '<?php echo addslashes($key->NOTIF_TIME)?>', '<?php echo addslashes($key->user_name)?>')"><i class="fa fa-check"></i> Baca</button></td>
+                                            <td><button class="btn btn-xs btn-flat <?php echo $key->NOTIF_READ == 0 ? "btn-primary" : "btn-default disabled"; ?>" onclick="modalbacasatu('<?php echo $key->NOTIF_ID?>', '<?php echo addslashes($key->NOTIF_TIME)?>', '<?php echo addslashes($key->USER_NAME)?>')"><i class="fa fa-check"></i> Baca</button></td>
                                         </tr>
                                         <?php } } else {  ?>
                                         <tr>
@@ -85,7 +85,7 @@
                                   </div>
                               </div>
                           </div>
-                          <input type="hidden" name="hapus-id" value="<?=$this->access->get_roleid();?>" />
+                          <input type="hidden" name="hapus-id" value="<?php echo $this->access->get_roleid();?>" />
                           <?php echo form_close(); ?>
                       </div><!-- /.box-body -->
                   </div>
@@ -117,7 +117,7 @@
                                   </div>
                               </div>
                           </div>
-                          <input type="hidden" name="baca-id" value="<?=$this->access->get_roleid();?>" />
+                          <input type="hidden" name="baca-id" value="<?php echo $this->access->get_roleid();?>" />
                           <?php echo form_close(); ?>
                       </div><!-- /.box-body -->
                   </div>
@@ -155,7 +155,7 @@
                                   </div>
                               </div>
                           </div>
-                          <input type="hidden" name="bacasatu-id" value="<?=$this->access->get_roleid();?>" />
+                          <input type="hidden" name="bacasatu-id" value="<?php echo $this->access->get_roleid();?>" />
                           <?php echo form_close(); ?>
                       </div><!-- /.box-body -->
                   </div>
@@ -200,7 +200,7 @@
                 });
                 $('#form-hapus').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>notifikasi/hapusnotif",
+                        url:"<?php echo site_url()?>/notifikasi/hapusnotif",
                         type:"POST",
                         data:$('#form-hapus').serialize(),
                         cache: false,
@@ -229,7 +229,7 @@
                 });
                 $('#form-baca').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>notifikasi/bacasemua",
+                        url:"<?php echo base_url()?>/notifikasi/bacasemua",
                         type:"POST",
                         data:$('#form-baca').serialize(),
                         cache: false,
@@ -258,7 +258,7 @@
                 });
                 $('#form-bacasatu').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>notifikasi/bacanotif",
+                        url:"<?php echo site_url()?>/notifikasi/bacanotif",
                         type:"POST",
                         data:$('#form-bacasatu').serialize(),
                         cache: false,

@@ -6,7 +6,7 @@ class Log_model extends Model {
 
     function Log_model() {
         parent::Model();
-        $this->CI = get_instance();
+        //$this->CI = get_instance();
     }
 
     function insert($log_id) {

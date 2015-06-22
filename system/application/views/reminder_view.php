@@ -8,7 +8,7 @@
                         <small>Untuk membuat Reminder ke UKM</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?=base_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Reminder</li>
                     </ol>
                 </section>
@@ -37,13 +37,12 @@
                                 <div class="box-body table-responsive no-padding">
                                     <table class="table table-hover">
                                         <tbody>
-
                                         <?php
-                                        if(!empty($datanotif)) {
-                                          foreach ($datanotif as $key) {
+                                        if(!empty($datareminder)) {
+                                          foreach ($datareminder as $key) {
                                         ?>
                                         <tr>
-                                            <td><span class="label label-<?=$key->tipe_nama;?>"><?=$key->teks ." / " . $key->NOTIF_TIME;?></span> <?=substr($key->NOTIF_ACTIVITY,0);?> { <i>dikirim ke <?=$key->ukm_name;?></i> }.</td>
+                                            <td><span class="label label-<?php echo $key->TIPE_NAMA;?>"><?php echo $key->TEKS ." / " . $key->NOTIF_TIME;?></span> <?php echo substr($key->NOTIF_ACTIVITY,0);?> { <i>dikirim ke <?php echo $key->UKM_NAME;?></i> }.</td>
                                         </tr>
                                         <?php } } else {  ?>
                                         <tr>
@@ -88,7 +87,7 @@
                                                       if(!empty($dataukm)) {
                                                         foreach ($dataukm as $key) {
                                                     ?>
-                                                    <option value="<?=$key->UKM_ID;?>"><?=$key->UKM_NAME;?></option>
+                                                    <option value="<?php echo $key->UKM_ID;?>"><?php echo $key->UKM_NAME;?></option>
                                                     <?php } } ?>
                                                 </select>
                                             </div><!-- /.input group -->
@@ -104,7 +103,7 @@
                                                       if(!empty($datatiperem)) {
                                                         foreach ($datatiperem as $key) {
                                                     ?>
-                                                    <option value="<?=$key->tipe_id;?>"><?=$key->tipe_teks;?></option>
+                                                    <option value="<?php echo $key->TIPE_ID;?>"> <?php echo $key->TIPE_TEKS;?></option>
                                                     <?php } } ?>
                                                 </select>
                                             </div><!-- /.input group -->
@@ -142,7 +141,7 @@
                 });
                 $('#form-tambah').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>reminder/baru",
+                        url:"<?php echo site_url()?>/reminder/baru",
                         type:"POST",
                         data:$('#form-tambah').serialize(),
                         cache: false,

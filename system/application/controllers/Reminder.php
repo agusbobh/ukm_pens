@@ -31,7 +31,9 @@ class Reminder extends MY_Controller {
                 $idukm = addslashes($this->input->post('rem-ukm', TRUE));
                 $teks = addslashes($this->input->post('rem-teks', TRUE));
                 $idtipe = addslashes($this->input->post('rem-tipe', TRUE));
-                $this->notif_model->insert(array('user_id' => $iduser,'ukm_id' => $idukm,'notif_activity' => $teks,'notif_from' => $iduser,'notif_to' => $idukm,'notif_tipe' => $idtipe));
+
+
+                $this->notif_model->insert($iduser, $idukm, $teks, $idtipe);
 
                 $status['status'] = 1;
                 $status['error'] = '';

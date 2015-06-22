@@ -47,7 +47,9 @@ class Dashboard extends MY_Controller {
           $data['dataagenda'] = $dat->_fetch_object();
         }
         $data['welcome_message'] = "Selamat " . $waktu . ucfirst($this->access->get_username()) . ". Hari ini tanggal " . $tanggal;
-        $data['datanotif'] = $this->notif_model->get_notif("notif_to", $id, "notif_read !=", 2),5);
+        //$data['datanotif'] = $this->notif_model->get_notif("notif_to", $id, "notif_read !=", 2),5);
+        $f = $this->notif_model->get_notif($id);
+        $data['datanotif'] = $f->_fetch_object();
 
         // generate view
         $this->load->view('header_view',$datah);
@@ -67,7 +69,9 @@ class Dashboard extends MY_Controller {
         if($this->access->get_ukmid() == 0) { $id = $this->access->get_userid();
         } else { $id = $this->access->get_ukmid(); }
 
-        $data['datanotif'] = $this->notif_model->get_notif(array("notif_to" => $id, "notif_read !=" => 2));
+        //$data['datanotif'] = $this->notif_model->get_notif(array("notif_to" => $id, "notif_read !=" => 2));
+        $dat = $this->notif_model->get_notif($id);
+        $data['datanotif'] = $dat->_fetch_object();
 
         // generate view
         $this->load->view('header_view',$datah);
@@ -82,9 +86,16 @@ class Dashboard extends MY_Controller {
         if($this->access->get_ukmid() == 0) { $id = $this->access->get_userid();
         } else { $id = $this->access->get_ukmid(); }
 
-        $data['datanotif'] = $this->notif_model->get_notif(array("notif_from" => $id));
-        $data['dataukm'] = $this->ukm_model->get_ukm(array());
-        $data['datatiperem'] = $this->notif_model->get_daftartipe(array());
+        //$data['datanotif'] = $this->notif_model->get_notif(array("notif_from" => $id));
+
+        $dab = $this->notif_model->get_reminder($id);
+        $data['datareminder'] = $dab->_fetch_object();
+
+        $dah = $this->ukm_model->get_ukm();
+        $data['dataukm'] = $dah->_fetch_object();
+
+        $dat = $this->notif_model->get_daftartipe();
+        $data['datatiperem'] = $dat->_fetch_object();
 
         // generate view
         $this->load->view('header_view',$datah);

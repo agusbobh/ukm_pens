@@ -6,11 +6,16 @@ class Notif_model extends Model {
 
     function Notif_model() {
         parent::Model();
-        $this->CI = get_instance();
+        //$this->CI = get_instance();
     }
 
-    function insert($data) {
-        $this->db->insert('notifikasi', $data);
+    function insert($iduser, $idukm, $teks, $idtipe) {
+        //$this->db->insert('notifikasi', $data);
+
+        $sql = "INSERT INTO notifikasi (notif_id, user_id, ukm_id, notif_activity, notif_time, notif_read, notif_from, notif_to, notif_tipe)"
+                . "VALUES(NOTIF_ID_SEQ.NEXTVAL,'".$iduser."', '".$idukm."', '".$teks."', SYSDATE , '0' ,'".$iduser."', '".$idukm."', '".$idtipe."')";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function delete($id) {
@@ -61,13 +66,19 @@ class Notif_model extends Model {
         }
     }
 
-    function get_daftartipe($parameter) {
-        $this->db->select('*');
+    function get_daftartipe() {
+        /*$this->db->select('*');
         $this->db->from('tipenotif');
         $this->db->where($parameter);
         $query = $this->db->get();
         return $query;
         // return (count($query->num_rows()) > 0 ? $query->result() : NULL);
+
+        */
+
+        $sql = "SELECT * FROM tipenotif";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_notif($id) {
@@ -84,13 +95,26 @@ class Notif_model extends Model {
         */
         //return (count($query->num_rows()) > 0 ? $query->result() : NULL);
 
-        $query = "SELECT notifikasi.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks, ukm.ukm_name AS ukm_name, user_sim.user_name AS user_name
-                FROM notifikasi JOIN tipenotif ON notifikasi.notif_tipe = tipenotif.tipe_id,
-                JOIN ukm ON notifikasi.ukm_id = ukm.ukm_id,
+        $sql = "SELECT notifikasi.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks, ukm.ukm_name AS ukm_name, user_sim.user_name AS user_name
+                FROM notifikasi
+                JOIN tipenotif ON notifikasi.notif_tipe = tipenotif.tipe_id
+                JOIN ukm ON notifikasi.ukm_id = ukm.ukm_id
                 JOIN user_sim ON notifikasi.user_id = user_sim.user_id
-                WHERE '".$id."'
+                WHERE (notifikasi.notif_to = '".$id."' AND notif_read != '2' )
                 ORDER BY notif_time DESC ";
-        //$query = $this->db->query($sql);
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function get_reminder($id) {
+        $sql = "SELECT notifikasi.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks, ukm.ukm_name AS ukm_name, user_sim.user_name AS user_name
+                FROM notifikasi
+                JOIN tipenotif ON notifikasi.notif_tipe = tipenotif.tipe_id
+                JOIN ukm ON notifikasi.ukm_id = ukm.ukm_id
+                JOIN user_sim ON notifikasi.user_id = user_sim.user_id
+                WHERE notifikasi.notif_from = '".$id."'
+                ORDER BY notif_time DESC ";
+        $query = $this->db->query($sql);
         return $query;
     }
 
