@@ -11,11 +11,11 @@ class Access {
         $this->CI = & get_instance();
 
         $this->CI->load->helper('cookie');
-        //$this->CI->load->model('user_mo del');
         //$this->CI->load->model('model_notif');
+        //$this->CI->load->model('user_mo del');
 
         $this->user_model = & $this->CI->user_model;
-        //$this->log_model = & $this->CI->log_model;
+        $this->log_model = & $this->CI->log_model;
     }
 
     /**
@@ -30,7 +30,7 @@ class Access {
     function login($username, $password) {
         $query = $this->user_model->get_login_info($username);
         $pre = $query->_fetch_object();
-        $result = $pre[0];
+        $result = empty($pre[0]) ? FALSE : $pre[0];
         //var_dump($result);
         //echo $result->USER_PASS;
         //die();
@@ -48,12 +48,15 @@ class Access {
                         'user_status' => "1",
                     );
                     $datalog = array(
-                        'log_text' => "User " . $result->USER_NAME . " login di SIM UKM",
+                        'log_text' => "User " . $result->USER_NAME . " LOGIN di SIM UKM",
                         'user_id' => $result->USER_ID
                     );
+
+                    $log_id = $result->USER_ID;
+                    $log_teks = 'Akun User ' . $result->USER_NAME . ' telah LOGIN di SIM UKM';
                     //$this->user_model->update($result->USER_ID, $data);
                     $this->user_model->update_status($result->USER_ID, 1);
-                    //$this->log_model->insert($datalog);
+                    $this->log_model->insert($log_id, $log_teks);
 
                     return 1;
             } else {
@@ -123,14 +126,14 @@ class Access {
      */
     function logout() {
         $datalog = array(
-            'log_text' => "User " . $this->get_username() . " logout di SIM UKM",
+            'log_text' => "User " . $this->get_username() . " LOGOUT di SIM UKM",
             'user_id' => $this->get_userid()
         );
         $log_id = $this->get_userid();
-        $log_text = 'User ' . $this->get_username() . ' logout di SIM UKM';
+        $log_teks = 'Akun User ' . $this->get_username() . ' telah LOGOUT di SIM UKM';
 
         $this->user_model->update_status($this->get_userid(), 0);
-        //$this->log_model->insert($log_id, $log_text);
+        $this->log_model->insert($log_id, $log_teks);
 
         $this->CI->session->unset_userdata('ukm_user_id');
         $this->CI->session->unset_userdata('ukm_username');

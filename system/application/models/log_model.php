@@ -9,10 +9,10 @@ class Log_model extends Model {
         //$this->CI = get_instance();
     }
 
-    function insert($log_id) {
+    function insert($log_id, $log_teks) {
         //$this->db->insert('log', $data);
         $sql = "INSERT INTO log (LOG_ID, USER_ID, LOG_TEXT, LOG_TIME)"
-                . "VALUES(LOG_ID_SEQ.NEXTVAL,'".$log_id."', 'LOGIN di', SYSDATE)";
+                . "VALUES(LOG_ID_SEQ.NEXTVAL,'".$log_id."', '".$log_teks."', SYSDATE)";
         $query = $this->db->query($sql);
         return $query;
     }
