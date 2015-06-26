@@ -47,22 +47,29 @@ class Notif_model extends Model {
 
     function get_total($parameter) {
         if(!empty($parameter)){
-            $this->db->select('count(*) AS Total');
-            $this->db->from('notifikasi');
-            $this->db->where($parameter);
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('notifikasi');
+            // $this->db->where($parameter);
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+            $sql = "SELECT count(*) AS Total FROM notifikasi
+                    WHERE  notif_id = ".$parameter." ";
+            $query = $this->db->query($sql);
+            return $query;
         }else{
-            $this->db->select('count(*) AS Total');
-            $this->db->from('notifikasi');
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('notifikasi');
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+            $sql = "SELECT count(*) AS Total FROM notifikasi";
+            $query = $this->db->query($sql);
+            return $query;
         }
     }
 

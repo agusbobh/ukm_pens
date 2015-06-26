@@ -102,13 +102,68 @@ class Dashboard extends MY_Controller {
         $this->load->view('reminder_view',$data);
     }
 
+    function getdata() {
+        $this->load->library('Json_encode');
+
+        // run query to get user listing
+        $idu = $this->access->get_ukmid();
+        $query = $this->data_model->get_daftardata($idu);
+        $a= $query->_fetch_object();
+        // get result after running query and put it in array
+        //$i = $start;
+        $counter = $a;
+        $i = 0;
+        $record = array();
+        //var_dump($query);
+        //die();
+        foreach ($a as $temp) {
+            $shap = $temp->STATUS != 2 ? "" : "disabled";
+            $sund = $temp->STATUS == 2 ? "" : "disabled";
+            $tambahan = "";
+            if($this->access->get_ukmid() != 0) {
+                $tambahan = '<button class="btn btn-xs btn-flat btn-info '. $shap .'" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\', \''.addslashes($temp->PESAN).'\')"><i class="fa fa-pencil"></i> Edit</button>';
+            }
+
+            $record[] = array();
+            $record[$i]['ID'] = $temp->ID;
+            $record[$i]['UKM'] = $temp->UKM;
+            $record[$i]['PESAN'] = $temp->PESAN;
+            $record[$i]['DIKIRIM'] = $temp->DIKIRIM;
+            $record[$i]['NAMA'] = $temp->NAMA;
+            $record[$i]['STATUS'] = $temp->STATUS;
+            if($this->access->get_roleid() != 41) {
+                $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
+                        <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-undo"></i> Undo</button>
+                        '. $tambahan .'';
+            } else {
+                $url = site_url() . "data/download/" . $temp->ID;
+                $record[$i]['OPSI'] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
+                                <i class="fa fa-download"></i> Download
+                            </a>';
+            }
+            //$record[] = '<a onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Username).'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\', \''.addslashes($temp->Dibuat).'\')" class="btn btn-info btn-xs">Edit</a>
+            //             <a onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\')" class="btn btn-danger btn-xs">Hapus</a>
+            //             <a onclick="modalpass(\''.$temp->ID.'\', \''.addslashes($temp->Username).')" class="btn btn-success btn-xs">Password</a>';
+
+            //$output['aaData'][] = $record;
+            $i++;
+        }
+        // var_dump($record);
+        // die();
+        // format it to JSON, this output will be displayed in datatable
+        //echo json_encode($output);
+        return $record;
+    }
+
     function laporan() {
         $datah['title'] = 'Laporan';
         $datah['menu'] = $this->user_model->get_menu($this->access->get_roleid());
 
+        $data['record_laporan'] = $this->getdata();
+
         // generate view
         $this->load->view('header_view',$datah);
-        $this->load->view('laporan_view');
+        $this->load->view('laporan_view',$data);
     }
 
     function log() {
@@ -243,21 +298,23 @@ class Dashboard extends MY_Controller {
 
     function getagenda() {
         // run query to get user listing
-        $query = $this->agenda_model->get_daftaragenda($ukmid, $start, $rows, $search);
 
+        $idukm = $this->access->get_ukmid();
+        $query = $this->agenda_model->get_daftaragenda($idukm);
+        $a = $query->_fetch_object();
         // get result after running query and put it in array
-        $counter = $query->result();
+        $counter = $a;
         $i = 0;
         $record = array();
-        foreach ($counter as $temp) {
-            $record = array();
-            $record[] = $temp->ID;
-            $record[] = $temp->Title;
-            $record[] = $temp->Time;
-            $record[] = $temp->Status;
-            $record[] = '<button class="btn btn-xs btn-flat btn-danger" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->Title).'\', \''.addslashes($temp->Time).'\')"><i class="fa fa-times"></i> Hapus</button>
-                        <button class="btn btn-xs btn-flat btn-primary" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Title).'\', \''.addslashes($temp->StatusID).'\', \''.addslashes($temp->Teks).'\', \''.addslashes($temp->Time).'\', \''.addslashes($temp->Timeto).'\')"><i class="fa fa-pencil"></i> Edit</button>
-                         <button class="btn btn-xs btn-flat btn-success" onclick="modallihat(\''.addslashes($temp->Title).'\', \''.addslashes($temp->Status).'\', \''.addslashes($temp->Teks).'\', \''.addslashes($temp->Time).'\', \''.addslashes($temp->Timeto).'\')"><i class="fa fa-eye"></i> Lihat</button>';
+        foreach ($a as $temp) {
+            $record[] = array();
+            $record[$i]['ID'] = $temp->ID;
+            $record[$i]['TITLE'] = $temp->TITLE;
+            $record[$i]['TIME'] = $temp->TIME;
+            $record[$i]['STATUS'] = $temp->STATUS;
+            $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->TITLE).'\', \''.addslashes($temp->TIME).'\')"><i class="fa fa-times"></i> Hapus</button>
+                        <button class="btn btn-xs btn-flat btn-primary" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->TITLE).'\', \''.addslashes($temp->STATUSID).'\', \''.addslashes($temp->TEKS).'\', \''.addslashes($temp->TIME).'\', \''.addslashes($temp->TIMETO).'\')"><i class="fa fa-pencil"></i> Edit</button>
+                         <button class="btn btn-xs btn-flat btn-success" onclick="modallihat(\''.addslashes($temp->TITLE).'\', \''.addslashes($temp->STATUS).'\', \''.addslashes($temp->TEKS).'\', \''.addslashes($temp->TIME).'\', \''.addslashes($temp->TIMETO).'\')"><i class="fa fa-eye"></i> Lihat</button>';
 
             //$output['aaData'][] = $record;
             $i++;
@@ -271,9 +328,10 @@ class Dashboard extends MY_Controller {
         $datah['title'] = 'Agenda';
         $datah['menu'] = $this->user_model->get_menu($this->access->get_roleid());
 
+        $data['record_agenda'] = $this->getagenda();
         // generate view
         $this->load->view('header_view',$datah);
-        $this->load->view('agenda_view');
+        $this->load->view('agenda_view',$data);
     }
 
     function profil() {
@@ -293,24 +351,39 @@ class Dashboard extends MY_Controller {
 
     function get_databox() {
         $id = "";
-        /*
+
         if($this->access->get_ukmid() == 0) {
           $id = $this->access->get_userid();
-          $data['boxlaporan'] = $this->data_model->get_total();
+          $dat = $this->data_model->get_total($id);
+          $data['boxlaporan'] = $dat->_fetch_object();
         } else {
           $id = $this->access->get_ukmid();
-          $data['boxlaporan'] = $this->data_model->get_total("ukm_id", $id);
+          $dat = $this->data_model->get_total($id);
+          $data['boxlaporan'] = $dat->_fetch_object();
         }
-        */
+
 
         // data buat box
-        //$data['boxukm'] = $this->ukm_model->get_total();
-        //$data['boxuser'] = $this->user_model->get_total();
-        //$data['boxlog'] = $this->log_model->get_total();
-        //$data['boxnotif'] = $this->notif_model->get_total(array("notif_to" => $id, "notif_read !=" => 2));
-        //$data['boxanggota'] = $this->anggota_model->get_total("ukm_id",$id);
-        //$data['boxagenda'] = $this->agenda_model->get_total("ukm_id",$id);
-        //$data['boxrem'] = $this->notif_model->get_total("notif_from",$id);
+        $dat = $this->ukm_model->get_total($id);
+        $data['boxukm'] = $dat->_fetch_object();
+
+        $dat = $this->user_model->get_total($id);
+        $data['boxuser'] = $dat->_fetch_object();
+
+        $dat = $this->log_model->get_total($id);
+        $data['boxlog'] = $dat->_fetch_object();
+
+        $dat = $this->notif_model->get_total($id);
+        $data['boxnotif'] = $dat->_fetch_object();
+
+        $dat = $this->anggota_model->get_total($id);
+        $data['boxanggota'] = $dat->_fetch_object();
+
+        $dat = $this->agenda_model->get_total($id);
+        $data['boxagenda'] = $dat->_fetch_object();
+
+        $dat = $this->notif_model->get_total($id);
+        $data['boxrem'] = $dat->_fetch_object();
         echo json_encode($data);
     }
 

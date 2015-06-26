@@ -8,7 +8,7 @@
                         <small>Manajemen anggota pada SIM UKM</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?=base_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Anggota</li>
                     </ol>
                 </section>
@@ -45,7 +45,31 @@
                                                 <th>Opsi</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                          <?php
+                                          foreach($record_anggota as $row){
+                                          ?>
+                                            <tr>
+                                              <td>
+                                                <?php echo $row['ID']?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['TITLE'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['TIME'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['STATUS'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['OPSI'] ?>
+                                              </td>
+                                            </tr>
+                                          <?php }
+                                          ?>
 
+                                        </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th>ID</th>
@@ -111,7 +135,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </section><!-- /.Right col -->
 
                     </div><!-- /.row (main row) -->
@@ -296,7 +320,7 @@
             }
 
             function refresh_jumlah(){
-                $.getJSON('<?=base_url();?>anggota/get_databox', function(obj) {
+                $.getJSON('<?php echo site_url();?>/anggota/get_databox', function(obj) {
                     $('#boxanggota').html(obj.boxanggota);
                     $('#boxpengurus').html(obj.boxpengurus);
                     $('#boxaktif').html(obj.boxaktif);
@@ -307,7 +331,7 @@
             $(document).ready(function() {
                 refresh_jumlah();
                 $('#btn-refresh').click(function(){
-                    $('#table-anggota').dataTable().fnReloadAjax();
+                    location.reload();
                     refresh_jumlah();
                 });
 
@@ -324,23 +348,6 @@
                     $('#modal-tambah').modal('show');
                 });
 
-                $('#table-anggota').dataTable({
-                    "sPaginationType": "bootstrap",
-                    "bProcessing": false,
-                    "bServerSide": true,
-                    "bJQueryUI": true,
-                    "iDisplayLength":6,
-                    "sAjaxSource": "<?=base_url()?>anggota/getanggota",
-                    "aoColumns": [
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false}
-                    ],
-
-                });
-
                 // Tambah User
                 $('#btn-simpan').click(function(){
                     $('#form-tambah').submit();
@@ -348,7 +355,7 @@
                 });
                 $('#form-tambah').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>anggota/tambah",
+                        url:"<?php echo site_url()?>/anggota/tambah",
                         type:"POST",
                         data:$('#form-tambah').serialize(),
                         cache: false,
@@ -358,7 +365,7 @@
                                 $('#form-pesan-tambah').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-tambah').html('')}, 2000);
                                 setTimeout(function(){$('#modal-tambah').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-anggota').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-tambah').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-tambah').html('')}, 5000);
@@ -377,7 +384,7 @@
                 });
                 $('#form-hapus').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>anggota/hapus",
+                        url:"<?php echo site_url()?>/anggota/hapus",
                         type:"POST",
                         data:$('#form-hapus').serialize(),
                         cache: false,
@@ -387,7 +394,7 @@
                                 $('#form-pesan-hapus').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 2000);
                                 setTimeout(function(){$('#modal-hapus').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-anggota').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-hapus').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 5000);
@@ -407,7 +414,7 @@
 
                 $('#form-edit').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>anggota/edit",
+                        url:"<?php echo site_url()?>/anggota/edit",
                         type:"POST",
                         data:$('#form-edit').serialize(),
                         cache: false,
@@ -417,7 +424,7 @@
                                 $('#form-pesan-edit').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 2000);
                                 setTimeout(function(){$('#modal-edit').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-anggota').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-edit').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 2000);

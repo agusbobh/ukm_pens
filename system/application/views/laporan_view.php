@@ -8,7 +8,7 @@
                         <small>Pengawasan Laporan pada SIM UKM</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?=base_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Laporan</li>
                     </ol>
                 </section>
@@ -51,7 +51,37 @@
                                                 <th>Opsi</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                          <?php
+                                          foreach($record_laporan as $row){
+                                          ?>
+                                            <tr>
+                                              <td>
+                                                <?php echo $row['ID']?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['UKM'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['PESAN'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['DIKIRIM'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['NAMA'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['STATUS'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['OPSI'] ?>
+                                              </td>
+                                            </tr>
+                                          <?php }
+                                          ?>
 
+                                        </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th>ID</th>
@@ -243,7 +273,7 @@
                                   </div>
                               </div>
                           </div>
-                          <input type="hidden" name="semua-id" value="<?=$this->access->get_roleid();?>" />
+                          <input type="hidden" name="semua-id" value="<?php echo $this->access->get_roleid();?>" />
                           <?php echo form_close(); ?>
                       </div><!-- /.box-body -->
                   </div>
@@ -348,21 +378,23 @@
                 $('#edit-download').attr("href", "http://ukm.pens.ac.id/data/download/"+id+"");
             }
 
+            /*
             function resizeWindow(e){
                 var newWindowWidth = $(window).width();
                 var oTable = $('#table-data').dataTable();
                 if(newWindowWidth > 1024){
-                        /* Do Something */
+                        // Do Something
                     oTable.fnSetColumnVis( 2, true );
                     oTable.fnSetColumnVis( 4, true );
                 }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
-                        /* Do Something */
+                        // Do Something
                     oTable.fnSetColumnVis( 2, false );
                     oTable.fnSetColumnVis( 4, false );
                 }else if(newWindowWidth < 600){
 
                 }
             }
+            */
 
 
             $(document).ready(function() {
@@ -383,7 +415,7 @@
                 });
 
                 $('#btn-refresh').click(function(){
-                    $('#table-data').dataTable().fnReloadAjax();
+                    location.reload();
                 });
 
                 $('#modal-hapus').on('shown.bs.modal', function (e) {
@@ -398,24 +430,6 @@
                     $('#btn-semua').focus();
                 });
 
-                $('#table-data').dataTable({
-                    "sPaginationType": "bootstrap",
-                    "bProcessing": false,
-                    "bServerSide": true,
-                    "bJQueryUI": true,
-                    "iDisplayLength":10,
-                    "sAjaxSource": "<?=base_url()?>data/getdata",
-                    "aoColumns": [
-                            {"bSearchable": false, "bSortable": false, "sWidth": 30},
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false},
-                            {"bSearchable": false, "bSortable": false, "sWidth": 120},
-                            {"bSearchable": false, "bSortable": false, "sWidth": 120},
-                            {"bSearchable": false, "bSortable": false, "sWidth": 100},
-                            {"bSearchable": false, "bSortable": false}
-                    ],
-
-                });
 
                 // undo
                 $('#btn-undo').click(function(){
@@ -425,7 +439,7 @@
 
                 $('#form-undo').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>data/undodata",
+                        url:"<?php echo site_url()?>/data/undodata",
                         type:"POST",
                         data:$('#form-undo').serialize(),
                         cache: false,
@@ -435,7 +449,7 @@
                                 $('#form-pesan-undo').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-undo').html('')}, 2000);
                                 setTimeout(function(){$('#modal-undo').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-data').dataTable().fnReloadAjax() }, 2500);
+                                setTimeout(function(){location.reload()}, 2500);
                             }else{
                                 $('#form-pesan-undo').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-undo').html('')}, 3000);
@@ -453,7 +467,7 @@
                 });
                 $('#form-hapus').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>data/hapusdata",
+                        url:"<?php echo site_url()?>/data/hapusdata",
                         type:"POST",
                         data:$('#form-hapus').serialize(),
                         cache: false,
@@ -463,7 +477,7 @@
                                 $('#form-pesan-hapus').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 2000);
                                 setTimeout(function(){$('#modal-hapus').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-data').dataTable().fnReloadAjax() }, 2500);
+                                setTimeout(function(){location.reload()}, 2500);
                             }else{
                                 $('#form-pesan-hapus').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 5000);
@@ -482,7 +496,7 @@
                 });
                 $('#form-semua').submit(function(){
                     $.ajax({
-                        url:"<?=base_url()?>data/hapusemua",
+                        url:"<?php echo site_url()?>/data/hapusemua",
                         type:"POST",
                         data:$('#form-semua').serialize(),
                         cache: false,
@@ -492,7 +506,7 @@
                                 $('#form-pesan-semua').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-semua').html('')}, 2000);
                                 setTimeout(function(){$('#modal-semua').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-data').dataTable().fnReloadAjax() }, 2500);
+                                setTimeout(function(){location.reload()}, 2500);
                             }else{
                                 $('#form-pesan-semua').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-semua').html('')}, 5000);
@@ -521,7 +535,7 @@
                     }
 
                     $.ajax({
-                        url:"<?=base_url()?>data/doupload",
+                        url:"<?php echo site_url()?>/data/doupload",
                         type:"POST",
                         data:form,
                         cache: false,
@@ -533,7 +547,7 @@
                                 $('#form-pesan-baru').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-baru').html('')}, 2000);
                                 setTimeout(function(){$('#modal-baru').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-data').dataTable().fnReloadAjax() }, 2500);
+                                setTimeout(function(){location.reload()}, 2500);
                             }else{
                                 $('#form-pesan-baru').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-baru').html('')}, 5000);
@@ -561,7 +575,7 @@
                     }
 
                     $.ajax({
-                        url:"<?=base_url()?>data/editdata",
+                        url:"<?php echo site_url()?>/data/editdata",
                         type:"POST",
                         data:form,
                         cache: false,
@@ -573,7 +587,7 @@
                                 $('#form-pesan-edit').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 2000);
                                 setTimeout(function(){$('#modal-edit').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-data').dataTable().fnReloadAjax() }, 2500);
+                                setTimeout(function(){ location.reload() }, 2500);
                             }else{
                                 $('#form-pesan-edit').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 5000);
@@ -586,8 +600,8 @@
                 });
                 <?php } ?>
 
-                $(window).bind("resize", resizeWindow);
-                resizeWindow();
+                //$(window).bind("resize", resizeWindow);
+                //resizeWindow();
 
 
             });

@@ -88,24 +88,31 @@ class User_model extends Model {
 
     }
 
-    function get_total($parameter = array()) {
+    function get_total($parameter) {
         if(!empty($parameter)){
-            $this->db->select('count(*) AS Total');
-            $this->db->from('user_sim');
-            $this->db->where($parameter);
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('user_sim');
+            // $this->db->where($parameter);
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+            $sql = "SELECT count(*) AS Total FROM user_sim
+                    WHERE  user_id = ".$parameter." ";
+            $query = $this->db->query($sql);
+            return $query;
         }else{
-            $this->db->select('count(*) AS Total');
-            $this->db->from('user_sim');
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('user_sim');
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
+            $sql = "SELECT count(*) AS Total FROM user_sim ";
+            $query = $this->db->query($sql);
+            return $query;
         }
     }
 

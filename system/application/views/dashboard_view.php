@@ -353,14 +353,14 @@
         <script type="text/javascript">
             function refresh_jumlah(){
                 $.getJSON('<?php echo site_url('/dashboard/get_databox');?>', function(obj) {
-                    $('#boxukm').html(obj.boxukm);
-                    $('#boxuser').html(obj.boxuser);
-                    $('#boxlog').html(obj.boxlog);
-                    $('#boxlaporan').html(obj.boxlaporan);
-                    $('#boxnotif').html(obj.boxnotif);
-                    $('#boxanggota').html(obj.boxanggota);
-                    $('#boxagenda').html(obj.boxagenda);
-                    $('#boxrem').html(obj.boxrem);
+                    $('#boxukm').html(obj.boxukm[0].TOTAL);
+                    $('#boxuser').html(obj.boxuser[0].TOTAL);
+                    $('#boxlog').html(obj.boxlog[0].TOTAL);
+                    $('#boxlaporan').html(obj.boxlaporan[0].TOTAL);
+                    $('#boxnotif').html(obj.boxnotif[0].TOTAL);
+                    $('#boxanggota').html(obj.boxanggota[0].TOTAL);
+                    $('#boxagenda').html(obj.boxagenda[0].TOTAL);
+                    $('#boxrem').html(obj.boxrem[0].TOTAL);
                 });
             }
 

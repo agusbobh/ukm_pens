@@ -263,7 +263,7 @@ class Data extends MY_Controller {
     }
 
     function cek_uname($str) {
-        $c_nama = $this->ukm_model->cek(array('ukm_name' => $str));
+        $c_nama = $this->ukm_model->cek('UKM_NAME', $str);
 
         if($c_nama->num_rows() > 0){
             $this->form_validation->set_message('cek_uname', 'Nama UKM sudah digunakan, silakan coba yang lain !!');
@@ -274,58 +274,39 @@ class Data extends MY_Controller {
     }
 
     function getdata() {
-        // variable initialization
-        $search = "";
-        $start = 0;
-        $rows = 10;
-
-        // get search value (if any)
-        if (isset($_GET['sSearch']) && $_GET['sSearch'] != "") {
-            $search = $_GET['sSearch'];
-        }
-
-        // limit
-        $start = $this->get_start();
-        $rows = $this->get_rows();
+        $this->load->library('Json_encode');
 
         // run query to get user listing
         $idu = $this->access->get_ukmid();
-        $query = $this->data_model->get_daftardata($start, $rows, $search, $idu);
-        $iFilteredTotal = $query->num_rows();
-        $iTotal = $this->data_model->get_count_daftardata($search, $idu)->row()->Total;
-
-        $output = array(
-            "sEcho" => intval($_GET['sEcho']),
-            "iTotalRecords" => $iTotal,
-            "iTotalDisplayRecords" => $iTotal,
-            "aaData" => array()
-        );
+        $query = $this->data_model->get_daftardata($idu);
 
         // get result after running query and put it in array
-        $i = $start;
-        $counter = $query->result();
+        //$i = $start;
+        $counter = $a;
+        $i = 0;
+        $record = array();
         foreach ($counter as $temp) {
             $shap = $temp->StatusID != 2 ? "" : "disabled";
             $sund = $temp->StatusID == 2 ? "" : "disabled";
             $tambahan = "";
             if($this->access->get_ukmid() != 0) {
-                $tambahan = '<button class="btn btn-xs btn-flat btn-info '. $shap .'" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->File).'\', \''.addslashes($temp->Pesan).'\')"><i class="fa fa-pencil"></i> Edit</button>';
+                $tambahan = '<button class="btn btn-xs btn-flat btn-info '. $shap .'" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILE).'\', \''.addslashes($temp->PESAN).'\')"><i class="fa fa-pencil"></i> Edit</button>';
             }
 
             $record = array();
-            $record[] = $temp->ID;
-            $record[] = $temp->UKM;
-            $record[] = $temp->Pesan;
-            $record[] = $temp->Dikirim;
-            $record[] = $temp->Nama;
-            $record[] = $temp->Status;
+            $record[$i]['ID'] = $temp->ID;
+            $record[$i]['UKM'] = $temp->UKM;
+            $record[$i]['PESAN'] = $temp->PESAN;
+            $record[$i]['DIKIRIM'] = $temp->DIKIRIM;
+            $record[$i]['NAMA'] = $temp->NAMA;
+            $record[$i]['STATUS'] = $temp->STATUS;
             if($this->access->get_roleid() != 41) {
-                $record[] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->File).'\')"><i class="fa fa-times"></i> Hapus</button>
-                        <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->File).'\')"><i class="fa fa-undo"></i> Undo</button>
+                $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILE).'\')"><i class="fa fa-times"></i> Hapus</button>
+                        <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILE).'\')"><i class="fa fa-undo"></i> Undo</button>
                         '. $tambahan .'';
             } else {
-                $url = base_url() . "data/download/" . $temp->ID;
-                $record[] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
+                $url = site_url() . "data/download/" . $temp->ID;
+                $record[$i]['OPSI'] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
                                 <i class="fa fa-download"></i> Download
                             </a>';
             }
@@ -333,10 +314,12 @@ class Data extends MY_Controller {
             //             <a onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\')" class="btn btn-danger btn-xs">Hapus</a>
             //             <a onclick="modalpass(\''.$temp->ID.'\', \''.addslashes($temp->Username).')" class="btn btn-success btn-xs">Password</a>';
 
-            $output['aaData'][] = $record;
+            //$output['aaData'][] = $record;
+            $i++;
         }
         // format it to JSON, this output will be displayed in datatable
-        echo json_encode($output);
+        //echo json_encode($output);
+        return $record;
     }
 
     /**

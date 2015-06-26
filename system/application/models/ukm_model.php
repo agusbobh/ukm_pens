@@ -9,32 +9,28 @@ class Ukm_model extends Model {
     }
 
     function get_total() {
-        /*if(!empty($parameter)){
-            $this->db->select('count(*) AS Total');
-            $this->db->from('ukm');
-            $this->db->where($parameter);
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
+        if(!empty($parameter)){
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('ukm');
+            // $this->db->where($parameter);
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
+            $sql = "SELECT count(*) AS Total FROM ukm
+                    WHERE  ukm_id = ".$parameter." ";
+            $query = $this->db->query($sql);
+            return $query;
         }else{
-            $this->db->select('count(*) AS Total');
-            $this->db->from('ukm');
-            $query = $this->db->get();
-            foreach($query->result() as $row){
-              return $row->Total;
-            }
-        }*/
-        if(!empty($id)){
-          $sql = "SELECT COUNT(*) AS Total FROM ukm";
-          $query = $this->db->query($sql);
-          return $query->row();
-        }else{
-          $sql = "SELECT COUNT(*) AS Total FROM ukm";
-          $query = $this->db->query($sql);
-          foreach($query as $row){
-            return $row->Total;
-          }
+            // $this->db->select('count(*) AS Total');
+            // $this->db->from('ukm');
+            // $query = $this->db->get();
+            // foreach($query->result() as $row){
+            //   return $row->Total;
+            // }
+            $sql = "SELECT count(*) AS Total FROM user_sim";
+            $query = $this->db->query($sql);
+            return $query;
         }
 
     }

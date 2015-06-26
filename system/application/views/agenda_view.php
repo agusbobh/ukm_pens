@@ -45,6 +45,31 @@
                                                 <th>Opsi</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                          <?php
+                                          foreach($record_agenda as $row){
+                                          ?>
+                                            <tr>
+                                              <td>
+                                                <?php echo $row['ID']?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['TITLE'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['TIME'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['STATUS'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['OPSI'] ?>
+                                              </td>
+                                            </tr>
+                                          <?php }
+                                          ?>
+
+                                        </tbody>
                                     </table>
                                 </div><!-- /.box-body -->
                             </div>
@@ -336,7 +361,7 @@
 
                 refresh_jumlah();
                 $('#btn-refresh').click(function(){
-                    $('#table-agenda').dataTable().fnReloadAjax();
+                    location.reload();
                     refresh_jumlah();
                 });
 
@@ -370,7 +395,7 @@
                                 $('#form-pesan-tambah').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-tambah').html('')}, 2000);
                                 setTimeout(function(){$('#modal-tambah').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-agenda').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-tambah').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-tambah').html('')}, 5000);
@@ -399,7 +424,7 @@
                                 $('#form-pesan-hapus').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 2000);
                                 setTimeout(function(){$('#modal-hapus').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-agenda').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-hapus').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-hapus').html('')}, 5000);
@@ -429,7 +454,7 @@
                                 $('#form-pesan-edit').html(pesan_succ(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 2000);
                                 setTimeout(function(){$('#modal-edit').modal('hide')}, 2500);
-                                setTimeout(function(){ $('#table-agenda').dataTable().fnReloadAjax(); refresh_jumlah(); }, 2500);
+                                setTimeout(function(){ location.reload(); refresh_jumlah(); }, 2500);
                             }else{
                                 $('#form-pesan-edit').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-edit').html('')}, 2000);
