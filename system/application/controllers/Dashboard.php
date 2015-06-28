@@ -286,14 +286,40 @@ class Dashboard extends MY_Controller {
         $this->load->view('ukm_view',$data);
     }
 
+    function getanggota() {
+        // run query to get user listing
+
+        $idukm = $this->access->get_ukmid();
+        $query = $this->anggota_model->get_daftaranggota($idukm);
+        $a = $query->_fetch_object();
+        // get result after running query and put it in array
+        $counter = $a;
+        $i = 0;
+        $record = array();
+        foreach ($a as $temp) {
+            $record[] = array();
+            $record[$i]['ID'] = $temp->ID;
+            $record[$i]['NAMA'] = $temp->NAMA;
+            $record[$i]['STATUS'] = $temp->STATUS;
+            $record[$i]['JABATAN'] = $temp->JABATAN;
+            $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->NAMA).'\', \''.addslashes($temp->JABATAN).'\')"><i class="fa fa-times"></i> Hapus</button>
+                        <button class="btn btn-xs btn-flat btn-primary" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->NAMA).'\', \''.addslashes($temp->STATUS).'\', \''.addslashes($temp->JABATAN).'\')"><i class="fa fa-pencil"></i> Edit</button>';
+            //$output['aaData'][] = $record;
+            $i++;
+
+        }
+        // format it to JSON, this output will be displayed in datatable
+        return $record;
+    }
+
     function anggota() {
         $datah['title'] = 'Anggota';
         $datah['menu'] = $this->user_model->get_menu($this->access->get_roleid());
-        //$data['datauser'] = $this->user_model->get_user(array("user_role" => "42"));
-
+        //$data['datauser'] = $this->user_model->get_user("42");
+        $data['record_anggota'] = $this->getanggota();
         // generate view
         $this->load->view('header_view',$datah);
-        $this->load->view('anggota_view');
+        $this->load->view('anggota_view',$data);
     }
 
     function getagenda() {
@@ -351,17 +377,9 @@ class Dashboard extends MY_Controller {
 
     function get_databox() {
         $id = "";
-
-        if($this->access->get_ukmid() == 0) {
-          $id = $this->access->get_userid();
-          $dat = $this->data_model->get_total($id);
-          $data['boxlaporan'] = $dat->_fetch_object();
-        } else {
-          $id = $this->access->get_ukmid();
-          $dat = $this->data_model->get_total($id);
-          $data['boxlaporan'] = $dat->_fetch_object();
-        }
-
+        $id = $this->access->get_ukmid();
+        $dat = $this->data_model->get_total($id);
+        $data['boxlaporan'] = $dat->_fetch_object();
 
         // data buat box
         $dat = $this->ukm_model->get_total($id);

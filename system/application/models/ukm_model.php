@@ -59,12 +59,16 @@ class Ukm_model extends Model {
         return $report;
     }
 
-    function update($id, $data) {
-        $this->db->where('ukm_id', $id);
-        $this->db->update('ukm', $data);
-        //$sql = "UPDATE ukm SET ukm_id = ".$data." WHERE ukm_id = ".$id." "
-        //$query = $this->db->query($sql);
-        //return $query;
+    function update($idukm, $nama, $iduser, $kontak) {
+        $sql = "UPDATE ukm SET ukm_name = '".$nama."', user_id = '".$iduser."', ukm_contact = '".$kontak."'  WHERE ukm_id = '".$idukm."' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function update_info($id, $teks) {
+        $sql = "UPDATE ukm SET ukm_info = '".$teks."' WHERE ukm_id = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function cek($field,$value) {

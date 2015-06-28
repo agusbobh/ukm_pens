@@ -348,10 +348,10 @@
 
             function refresh_jumlah(){
                 $.getJSON('<?php echo site_url();?>/agenda/get_databox', function(obj) {
-                    $('#boxsemua').html(obj.boxsemua);
-                    $('#boxpublish').html(obj.boxpublish);
-                    $('#boxdraft').html(obj.boxdraft);
-                    $('#boxselesai').html(obj.boxselesai);
+                    $('#boxsemua').html(obj.boxsemua[0].TOTAL);
+                    $('#boxpublish').html(obj.boxpublish[0].TOTAL);
+                    $('#boxdraft').html(obj.boxdraft[0].TOTAL);
+                    $('#boxselesai').html(obj.boxselesai[0].TOTAL);
                 });
             }
 

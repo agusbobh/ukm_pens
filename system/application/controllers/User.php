@@ -64,14 +64,7 @@ class User extends MY_Controller {
                   $status['status'] = 0;
                   $status['pesan'] = validation_errors();
               } else {
-                  $data = array(
-                    'USER_NAME' => $username,
-                    'USER_MAIL' => $email,
-                    'USER_ROLE' => $idrole,
-                    'UKM_ID' => $idukm
-                  );
-
-                  $this->user_model->update($iduser,$data);
+                  $this->user_model->update($iduser,$username, $email, $idrole, $idukm);
 
                   $status['status'] = 1;
                   $status['pesan'] = "Perubahan pada user " . $tempuname . " berhasil disimpan";
@@ -84,13 +77,7 @@ class User extends MY_Controller {
 
               }
           } else {
-              $data = array(
-                'USER_MAIL' => $email,
-                'USER_ROLE' => $idrole,
-                'UKM_ID' => $idukm
-              );
-
-              $this->user_model->update($iduser,$data);
+              $this->user_model->update($iduser, $email, $idrole, $idukm);
 
               $status['status'] = 1;
               $status['pesan'] = "Perubahan pada user " . $tempuname . " berhasil disimpan";
@@ -133,9 +120,9 @@ class User extends MY_Controller {
 
         if($this->form_validation->run() == TRUE){
                 $passbaru = addslashes($this->input->post('pass-baru', TRUE));
-                $id = addslashes($this->input->post('pass-id', TRUE));
+                $iduser = addslashes($this->input->post('pass-id', TRUE));
 
-                $this->user_model->update($id,array('user_pass' => sha1($passbaru)));
+                $this->user_model->update_pass($iduser,sha1($passbaru));
                 $status['status'] = 1;
                 $status['pesan'] = 'Password user ' . addslashes($this->input->post('pass-name', TRUE)) . ' berhasil diubah';
         }else{

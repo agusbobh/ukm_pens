@@ -156,10 +156,15 @@ class Agenda extends MY_Controller {
     public function get_databox() {
         $ukmid = $this->access->get_ukmid();
         // data buat box
-        $data['boxsemua'] = $this->agenda_model->get_total(array("agenda_status !=" => 2, "ukm_id" => $ukmid));
-        $data['boxdraft'] = $this->agenda_model->get_total(array("agenda_status" => 0, "ukm_id" => $ukmid));
-        $data['boxpublish'] = $this->agenda_model->get_total(array("agenda_status" => 1, "ukm_id" => $ukmid));
-        $data['boxselesai'] = $this->agenda_model->get_total(array("agenda_status" => 3, "ukm_id" => $ukmid));
+        
+        $dat = $this->agenda_model->get_subtotal($ukmid, 2);
+        $data['boxsemua'] = $dat->_fetch_object();
+        $dat = $this->agenda_model->get_subtotal($ukmid, 0);
+        $data['boxdraft'] = $dat->_fetch_object();
+        $dat = $this->agenda_model->get_subtotal($ukmid, 1);
+        $data['boxpublish'] = $dat->_fetch_object();
+        $dat = $this->agenda_model->get_subtotal($ukmid, 3);
+        $data['boxselesai'] = $dat->_fetch_object();
 
         echo json_encode($data);
     }

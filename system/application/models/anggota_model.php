@@ -66,26 +66,23 @@ class Anggota_model extends Model {
 
     }
 
-    function get_daftaranggota($ukm, $start, $rows, $search) {
+    function get_daftaranggota($idukm) {
 
         $sql = "SELECT
-            `anggota`.`anggota_id` AS ID,
-            `anggota`.`ukm_id` AS UKMid,
-            `ukm`.`ukm_name` AS UKM,
-            `anggota`.`anggota_name` AS Nama,
-            `anggota`.`anggota_status` AS StatusID,
-            `anggota`.`anggota_level` AS LevelID,
-            REPLACE(REPLACE(REPLACE(`anggota`.`anggota_level`,'10','Anggota'),'11','Pengurus'),'12','Ketua') AS Level,
-            REPLACE(REPLACE(`anggota`.`anggota_status`,'0','Nonaktif'),'1','Aktif') AS Status
-        FROM `anggota`
-        INNER JOIN `ukm` ON (`anggota`.`ukm_id` = `ukm`.`ukm_id`)
-        WHERE `anggota`.`ukm_id` = ". $ukm ." AND (`anggota`.`anggota_id` LIKE '%".$search."%'
-                OR `anggota`.`anggota_name` LIKE '%".$search."%'
-                OR REPLACE(REPLACE(`anggota`.`anggota_status`,'0','Nonaktif'),'1','Aktif') LIKE '%".$search."%'
-                OR REPLACE(REPLACE(REPLACE(`anggota`.`anggota_level`,'10','Anggota'),'11','Pengurus'),'12','Ketua') LIKE '%".$search."%')
-        ORDER BY `anggota`.`anggota_id` LIMIT ".$start.",".$rows."";
-
-        return $this->db->query($sql);
+            anggota.anggota_id AS ID,
+            anggota.ukm_id AS UKMid,
+            ukm.ukm_name AS UKM,
+            anggota.anggota_name AS Nama,
+            anggota.anggota_status AS StatusID,
+            anggota.anggota_level AS LevelID,
+            REPLACE(REPLACE(REPLACE(anggota.anggota_level,'10','Anggota'),'11','Pengurus'),'12','Ketua') AS Jabatan,
+            REPLACE(REPLACE(anggota.anggota_status,'0','Nonaktif'),'1','Aktif') AS Status
+        FROM anggota
+        INNER JOIN ukm ON (anggota.ukm_id = ukm.ukm_id)
+        WHERE anggota.ukm_id = ". $idukm ."
+        ORDER BY anggota.anggota_id ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_count_daftaranggota($ukm, $search) {

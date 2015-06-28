@@ -163,11 +163,21 @@ class User_model extends Model {
       */
     }
 
-    function update($id, $data) {
-        $this->db->where('user_id', $id);
-        $this->db->update('user_sim', $data);
+    function update($iduser, $username, $email, $idrole, $idukm ) {
+        // $this->db->where('user_id', $id);
+        // $this->db->update('user_sim', $data);
+        $sql = "UPDATE user_sim SET user_name =  '".$username."', user_mail = '".$email."', user_role = '".$idrole."', ukm_id = '".$idukm."' WHERE user_id = '".$iduser."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
+    function update_pass($iduser, $passbaru) {
+        // $this->db->where('user_id', $id);
+        // $this->db->update('user_sim', $data);
+        $sql = "UPDATE user_sim SET user_pass = '".$passbaru."' WHERE user_id = '".$iduser."' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 
     function update_status($id, $status){
           $sql = "UPDATE user_sim SET user_status = ".$status." WHERE user_id = ".$id." ";

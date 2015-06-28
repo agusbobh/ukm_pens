@@ -23,7 +23,10 @@ class Log_model extends Model {
     }
 
     function deleteall() {
-        $this->db->empty_table('log');
+        //$this->db->empty_table('log');
+        $sql = "DELETE FROM log";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function selectone($id) {

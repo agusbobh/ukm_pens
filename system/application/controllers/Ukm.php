@@ -59,38 +59,13 @@ class Ukm extends MY_Controller {
                   $status['status'] = 0;
                   $status['pesan'] = validation_errors();
               } else {
-                  if($iduser == 0) {
-                      $data = array(
-                        'UKM_NAME' => $nama,
-                        'UKM_CONTACT' => $kontak
-                      );
-                  } else {
-                      $data = array(
-                        'UKM_NAME' => $nama,
-                        'USER_ID' => $iduser,
-                        'UKM_CONTACT' => $kontak
-                      );
-                  }
-
-
-                  $this->ukm_model->update($idukm,$data);
+                  $this->ukm_model->update($idukm, $nama, $iduser, $kontak);
 
                   $status['status'] = 1;
                   $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
               }
           } else {
-              if($iduser == 0) {
-                  $data = array(
-                    'UKM_CONTACT' => $kontak
-                  );
-              } else {
-                  $data = array(
-                    'USER_ID' => $iduser,
-                    'UKM_CONTACT' => $kontak
-                  );
-              }
-
-              $this->ukm_model->update($idukm,$data);
+              $this->ukm_model->update($idukm, $iduser, $kontak);
 
               $status['status'] = 1;
               $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
@@ -130,7 +105,7 @@ class Ukm extends MY_Controller {
             $id = addslashes($this->input->post('info-id', TRUE));
             $teks = addslashes($this->input->post('info-teks', TRUE));
 
-            $this->ukm_model->update($id,array('ukm_info' => $teks));
+            $this->ukm_model->update_info($id,$teks);
 
             $status['status'] = 1;
             $status['pesan'] = 'Info UKM berhasil diperbarui';

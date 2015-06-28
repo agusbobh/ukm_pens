@@ -36,6 +36,13 @@ class Agenda_model extends Model {
         }
     }
 
+    function get_subtotal($ukmid, $status) {
+            $sql = "SELECT count(*) AS Total FROM agenda
+                    WHERE  agenda_id = ".$ukmid." AND agenda_status = ".$status." ";
+            $query = $this->db->query($sql);
+            return $query;
+    }
+
     function insert($data) {
         $this->db->insert('agenda', $data);
     }

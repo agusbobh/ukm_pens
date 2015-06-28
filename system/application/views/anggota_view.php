@@ -8,7 +8,7 @@
                         <small>Manajemen anggota pada SIM UKM</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Anggota</li>
                     </ol>
                 </section>
@@ -41,7 +41,7 @@
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Status</th>
-                                                <th>Level</th>
+                                                <th>Jabatan</th>
                                                 <th>Opsi</th>
                                             </tr>
                                         </thead>
@@ -54,13 +54,13 @@
                                                 <?php echo $row['ID']?>
                                               </td>
                                               <td>
-                                                <?php echo $row['TITLE'] ?>
-                                              </td>
-                                              <td>
-                                                <?php echo $row['TIME'] ?>
+                                                <?php echo $row['NAMA'] ?>
                                               </td>
                                               <td>
                                                 <?php echo $row['STATUS'] ?>
+                                              </td>
+                                              <td>
+                                                <?php echo $row['JABATAN'] ?>
                                               </td>
                                               <td>
                                                 <?php echo $row['OPSI'] ?>
@@ -75,7 +75,7 @@
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Status</th>
-                                                <th>Level</th>
+                                                <th>Jabatan</th>
                                                 <th>Opsi</th>
                                             </tr>
                                         </tfoot>
@@ -221,7 +221,7 @@
                                       <div class="form-group">
 
                                         <div class="input-group">
-                                          <span class="input-group-addon">Level:</span>
+                                          <span class="input-group-addon">Jabatan:</span>
                                           <select class="form-control" id="edit-level" name="edit-level">
                                               <option value="10">Anggota</option>
                                               <option value="11">Pengurus</option>
@@ -321,10 +321,10 @@
 
             function refresh_jumlah(){
                 $.getJSON('<?php echo site_url();?>/anggota/get_databox', function(obj) {
-                    $('#boxanggota').html(obj.boxanggota);
-                    $('#boxpengurus').html(obj.boxpengurus);
-                    $('#boxaktif').html(obj.boxaktif);
-                    $('#boxnon').html(obj.boxnon);
+                    $('#boxanggota').html(obj.boxanggota[0].TOTAL);
+                    $('#boxpengurus').html(obj.boxpengurus[0].TOTAL);
+                    $('#boxaktif').html(obj.boxaktif[0].TOTAL);
+                    $('#boxnon').html(obj.boxnon[0].TOTAL);
                 });
             }
 
