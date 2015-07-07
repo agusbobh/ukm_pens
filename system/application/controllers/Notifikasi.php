@@ -20,14 +20,13 @@ class Notifikasi extends MY_Controller {
 
         if($this->form_validation->run() == TRUE){
             $id = addslashes($this->input->post('hapus-id', TRUE));
-            if($id == 42) {
-                $this->notif_model->updateall(array("notif_to" => $this->access->get_ukmid()),array("notif_read" => 2));
+            $notif_to = $this->access->get_ukmid();
 
-                $datalog = array(
-                    'log_text' => "User " . $this->access->get_username() . " menghapus semua notifikasi yang diterimanya ",
-                    'user_id' => $this->access->get_userid()
-                );
-                $this->log_model->insert($datalog);
+            $log_id   = $this->access->get_userid();
+            $log_teks = 'User ' . $this->access->get_username() . ' telah menghapus semua notifikasi yang diterimanya ';
+            if($id == 42) {
+                //$this->log_model->insert($log_id, $log_teks);
+                $this->notif_model->updateall(2, $notif_to);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Semua notifikasi berhasil dihapus';
@@ -51,8 +50,10 @@ class Notifikasi extends MY_Controller {
         if($this->form_validation->run() == TRUE){
             $id = addslashes($this->input->post('bacasatu-id', TRUE));
             $notifid = addslashes($this->input->post('notifid', TRUE));
+            $notif_to = $this->access->get_ukmid();
+
             if($id == 42) {
-                $this->notif_model->updateall(array("notif_to" => $this->access->get_ukmid(), "notif_id" => $notifid), array("notif_read" => 1));
+                $this->notif_model->update($notifid, 1, $notif_to);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Notifikasi berhasil ditandai telah dibaca';
@@ -74,14 +75,14 @@ class Notifikasi extends MY_Controller {
 
         if($this->form_validation->run() == TRUE){
             $id = addslashes($this->input->post('baca-id', TRUE));
-            if($id == 42) {
-                $this->notif_model->updateall(array("notif_to" => $this->access->get_ukmid(), "notif_read" => 0), array("notif_read" => 1));
 
-                $datalog = array(
-                    'log_text' => "User " . $this->access->get_username() . " menandai telah dibaca semua notifikasi yang diterimanya ",
-                    'user_id' => $this->access->get_userid()
-                );
-                $this->log_model->insert($datalog);
+            $notif_to = $this->access->get_ukmid();
+            $log_id   = $this->access->get_userid();
+            $log_teks = 'User ' . $this->access->get_username() . ' menandai telah dibaca semua notifikasi yang diterimanya.';
+
+            if($id == 42) {
+                $this->notif_model->updateall(1, $notif_to);
+                //$this->log_model->insert($log_id, $log_teks);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Semua notifikasi berhasil ditandai telah dibaca';

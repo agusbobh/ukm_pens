@@ -18,7 +18,7 @@
                     <!-- info selamat datang -->
                     <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Di halaman ini Anda bisa menambahkan, memodifikasi informasi, dan menghapus anggota
+                        Di halaman ini Anda bisa menambahkan, memodifikasi informasi, dan menghapus Anggota
                     </div>
 
                     <!-- Main row -->
@@ -167,7 +167,7 @@
                                           <p>Apakah Anda yakin ingin menghapus Anggota berikut ?</p>
                                           <div class="callout callout-info">
                                               <p>Nama : <span id="hapus-nama"> </span></p>
-                                              <p>Level : <span id="hapus-level"> </span></p>
+                                              <p>Jabatan : <span id="hapus-level"> </span></p>
                                           </div>
 
                                   </div>
@@ -272,7 +272,7 @@
                                       <div class="form-group">
 
                                         <div class="input-group">
-                                          <span class="input-group-addon">Level:</span>
+                                          <span class="input-group-addon">Jabatan:</span>
                                           <select class="form-control" id="tambah-level" name="tambah-level">
                                               <option value="10">Anggota</option>
                                               <option value="11">Pengurus</option>

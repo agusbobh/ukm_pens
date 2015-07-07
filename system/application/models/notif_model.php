@@ -18,6 +18,15 @@ class Notif_model extends Model {
         return $query;
     }
 
+    function insert_notif($iduser, $idukm, $teks) {
+        //$this->db->insert('notifikasi', $data);
+
+        $sql = "INSERT INTO notifikasi (notif_id, user_id, ukm_id, notif_activity, notif_time, notif_read, notif_from, notif_to, notif_tipe)"
+                . "VALUES(NOTIF_ID_SEQ.NEXTVAL,'".$iduser."', '".$idukm."', '".$teks."', SYSDATE , '0' ,'".$iduser."', '21', '1')";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     function delete($id) {
         $this->db->where('notifikasi_id', $id);
         $this->db->delete('notifikasi');
@@ -27,9 +36,12 @@ class Notif_model extends Model {
         $this->db->empty_table('notifikasi');
     }
 
-    function updateall($parameter,$data) {
-        $this->db->where($parameter);
-        $this->db->update('notifikasi', $data);
+    function updateall($notif_read, $notif_to) {
+        // $this->db->where($parameter);
+        // $this->db->update('notifikasi', $data);
+        $sql = "UPDATE notifikasi SET notif_read = '".$notif_read."' WHERE notif_to = '".$notif_to."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function selectone($id) {
@@ -40,9 +52,12 @@ class Notif_model extends Model {
         return $query;
     }
 
-    function update($id, $data) {
-        $this->db->where('notifikasi_id', $id);
-        $this->db->update('notifikasi', $data);
+    function update($notifid, $notif_read, $notif_to) {
+        // $this->db->where('notifikasi_id', $id);
+        // $this->db->update('notifikasi', $data);
+        $sql = "UPDATE notifikasi SET notif_read = '".$notif_read."' WHERE notif_to = '".$notif_to."' AND notif_id = '".$notifid."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_total($parameter) {
@@ -56,7 +71,7 @@ class Notif_model extends Model {
             // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM notifikasi
-                    WHERE  notif_id = ".$parameter." ";
+                    WHERE  ukm_id = ".$parameter." AND notif_read != 2";
             $query = $this->db->query($sql);
             return $query;
         }else{

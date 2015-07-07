@@ -9,9 +9,10 @@ class User_model extends Model {
     }
 
     function get_login_info($username) {
-        $sql = "SELECT user_sim.user_id, user_sim.user_name, user_sim.user_pass, user_sim.user_role, user_sim.user_mail, user_sim.ukm_id, role.role_name AS rolename
+        $sql = "SELECT user_sim.user_id, user_sim.user_name, user_sim.user_pass, user_sim.user_role, user_sim.user_mail, user_sim.ukm_id, role.role_name AS rolename, ukm.ukm_name AS ukm_name
             FROM user_sim
             INNER JOIN role ON user_sim.user_role = role.role_id
+            INNER JOIN ukm ON ukm.ukm_id = ukm.ukm_id
             WHERE user_sim.user_name = '" .$username. "' ";
 
 

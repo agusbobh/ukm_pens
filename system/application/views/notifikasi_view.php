@@ -18,7 +18,7 @@
                     <!-- info selamat datang -->
                     <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Di halaman ini kamu bisa melihat semua notifikasi yang ditujukan kepadamu
+                        Di halaman ini anda bisa melihat semua notifikasi yang ditujukan untuk anda.
                     </div>
 
                     <!-- Main row -->
@@ -229,7 +229,7 @@
                 });
                 $('#form-baca').submit(function(){
                     $.ajax({
-                        url:"<?php echo base_url()?>/notifikasi/bacasemua",
+                        url:"<?php echo site_url()?>/notifikasi/bacasemua",
                         type:"POST",
                         data:$('#form-baca').serialize(),
                         cache: false,

@@ -19,7 +19,7 @@ class Anggota_model extends Model {
             // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM anggota
-                    WHERE  anggota_id = ".$parameter." ";
+                    WHERE  ukm_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
@@ -36,18 +36,43 @@ class Anggota_model extends Model {
         }
     }
 
-    function insert($data) {
-        $this->db->insert('anggota', $data);
+    function get_subtotal($ukmid, $status) {
+            $sql = "SELECT count(*) AS Total FROM anggota
+                    WHERE  ukm_id = ".$ukmid." AND anggota_status = ".$status." ";
+            $query = $this->db->query($sql);
+            return $query;
+    }
+
+    function get_totaljabatan($ukmid, $status) {
+            $sql = "SELECT count(*) AS Total FROM anggota
+                    WHERE  ukm_id = ".$ukmid." AND anggota_level= ".$status." ";
+            $query = $this->db->query($sql);
+            return $query;
+    }
+
+    function insert($anggota_ukm, $anggota_name, $anggota_level) {
+        // $this->db->insert('anggota', $data);
+        $sql = "INSERT INTO anggota (ANGGOTA_ID, UKM_ID, ANGGOTA_NAME, ANGGOTA_STATUS, ANGGOTA_LEVEL)"
+                . "VALUES(ANGGOTA_ID_SEQ.NEXTVAL,'".$anggota_ukm."', '".$anggota_name."','1','".$anggota_level."')";
+        $query = $this->db->query($sql);
+
+        return $query;
     }
 
     function delete($id) {
-        $this->db->where('anggota_id', $id);
-        $this->db->delete('anggota');
+        // $this->db->where('anggota_id', $id);
+        // $this->db->delete('anggota');
+        $sql = "DELETE FROM anggota WHERE anggota_id = ".$id." ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
-    function update($id, $data) {
-        $this->db->where('anggota_id', $id);
-        $this->db->update('anggota', $data);
+    function update($idanggota, $nama, $idstatus, $idlevel) {
+        // $this->db->where('anggota_id', $id);
+        // $this->db->update('anggota', $data);
+        $sql = "UPDATE anggota SET anggota_name = '".$nama."', anggota_status = '".$idstatus."', anggota_level = '".$idlevel."'  WHERE anggota_id = '".$idanggota."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_anggota($id = 0) {

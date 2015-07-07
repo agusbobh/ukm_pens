@@ -37,8 +37,12 @@ class Data_model extends Model {
         }
     }
 
-    function insert($data) {
-        $this->db->insert('data', $data);
+    function insert($idukm, $data_laporan, $data_msg) {
+        // $this->db->insert('data', $data);
+        $sql = "INSERT INTO data (DATA_ID, UKM_ID, DATA_FILE_LAPORAN, DATA_MSG, DATA_FROM, DATA_TO, DATA_TIME, DATA_STATUS)"
+                . "VALUES(DATA_ID_SEQ.NEXTVAL,'".$idukm."', '".$data_laporan."', '".$data_msg."', '".$idukm."' , '21', SYSDATE, '0')";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function delete($id) {

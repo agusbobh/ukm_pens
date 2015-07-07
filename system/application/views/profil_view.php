@@ -18,7 +18,7 @@
         <!-- info selamat datang -->
         <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            Di halaman ini Anda bisa memodifikasi informasi dan mengganti password Anda
+            Di halaman ini merupakan detail informasi user.
         </div>
 
         <!-- Main row -->
@@ -29,7 +29,7 @@
                     <div class="box-header">
                         <!-- tools -->
                         <div class="pull-right box-tools">
-                            <button class="btn btn-sm btn-info" id="btn-edit-info"><i class="fa fa-pencil"></i> Edit Info</button>
+                            <!-- <button class="btn btn-sm btn-info" id="btn-edit-info"><i class="fa fa-pencil"></i> Edit Info</button> -->
                             <button class="btn btn-sm btn-success" id="btn-ganti-password"><i class="fa fa-lock"></i> Ganti Password</button>
                         </div>
                         <!-- /.tools -->

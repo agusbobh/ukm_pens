@@ -43,6 +43,7 @@ class Access {
                     $this->CI->session->set_userdata('ukm_usermail', $result->USER_MAIL);
                     $this->CI->session->set_userdata('ukm_role_id', $result->USER_ROLE);
                     $this->CI->session->set_userdata('ukm_ukmid', $result->UKM_ID);
+                    $this->CI->session->set_userdata('ukm_name', $result->UKM_NAME);
 
                     $data = array(
                         'user_status' => "1",
@@ -119,6 +120,10 @@ class Access {
 
     function get_ukmid() {
         return $this->CI->session->userdata('ukm_ukmid');
+    }
+
+    function get_ukmname() {
+        return $this->CI->session->userdata('ukm_name');
     }
 
     /**

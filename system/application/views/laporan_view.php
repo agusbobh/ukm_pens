@@ -8,7 +8,7 @@
                         <small>Pengawasan Laporan pada SIM UKM</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Laporan</li>
                     </ol>
                 </section>
@@ -18,7 +18,7 @@
                     <!-- info selamat datang -->
                     <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Di halaman ini Anda bisa memodifikasi dan menghapus/undo Laporan
+                        Di halaman ini terdapat daftar dokumen-dokumen.
                     </div>
 
                     <!-- Main row -->
@@ -119,7 +119,7 @@
                       <div class="box-body table-responsive">
                           <span id="form-pesan-baru">
                           </span>
-                          <?php echo form_open_multipart('data/doupload', 'id="form-baru"') ?>
+                          <?php echo form_open_multipart('data/doupload', array('id' => 'form-baru')) ?>
                           <div class="box-body">
                               <div class="row">
                                   <div class="col-md-12">
@@ -378,23 +378,21 @@
                 $('#edit-download').attr("href", "http://ukm.pens.ac.id/data/download/"+id+"");
             }
 
-            /*
-            function resizeWindow(e){
-                var newWindowWidth = $(window).width();
-                var oTable = $('#table-data').dataTable();
-                if(newWindowWidth > 1024){
-                        // Do Something
-                    oTable.fnSetColumnVis( 2, true );
-                    oTable.fnSetColumnVis( 4, true );
-                }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
-                        // Do Something
-                    oTable.fnSetColumnVis( 2, false );
-                    oTable.fnSetColumnVis( 4, false );
-                }else if(newWindowWidth < 600){
-
-                }
-            }
-            */
+            // function resizeWindow(e){
+            //     var newWindowWidth = $(window).width();
+            //     var oTable = $('#table-data').dataTable();
+            //     if(newWindowWidth > 1024){
+            //             // Do Something
+            //         oTable.fnSetColumnVis( 2, true );
+            //         oTable.fnSetColumnVis( 4, true );
+            //     }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
+            //             // Do Something
+            //         oTable.fnSetColumnVis( 2, false );
+            //         oTable.fnSetColumnVis( 4, false );
+            //     }else if(newWindowWidth < 600){
+            //
+            //     }
+            // }
 
 
             $(document).ready(function() {
@@ -439,7 +437,7 @@
 
                 $('#form-undo').submit(function(){
                     $.ajax({
-                        url:"<?php echo site_url()?>/data/undodata",
+                        url:"<?php echo site_url();?>/data/undodata",
                         type:"POST",
                         data:$('#form-undo').serialize(),
                         cache: false,
@@ -467,7 +465,7 @@
                 });
                 $('#form-hapus').submit(function(){
                     $.ajax({
-                        url:"<?php echo site_url()?>/data/hapusdata",
+                        url:"<?php echo site_url();?>/data/hapusdata",
                         type:"POST",
                         data:$('#form-hapus').serialize(),
                         cache: false,
@@ -496,7 +494,7 @@
                 });
                 $('#form-semua').submit(function(){
                     $.ajax({
-                        url:"<?php echo site_url()?>/data/hapusemua",
+                        url:"<?php echo site_url();?>/data/hapusemua",
                         type:"POST",
                         data:$('#form-semua').serialize(),
                         cache: false,
@@ -535,7 +533,7 @@
                     }
 
                     $.ajax({
-                        url:"<?php echo site_url()?>/data/doupload",
+                        url:"<?php echo site_url();?>/data/doupload",
                         type:"POST",
                         data:form,
                         cache: false,
@@ -575,7 +573,7 @@
                     }
 
                     $.ajax({
-                        url:"<?php echo site_url()?>/data/editdata",
+                        url:"<?php echo site_url();?>/data/editdata",
                         type:"POST",
                         data:form,
                         cache: false,
@@ -600,8 +598,8 @@
                 });
                 <?php } ?>
 
-                //$(window).bind("resize", resizeWindow);
-                //resizeWindow();
+                // $(window).bind("resize", resizeWindow);
+                // resizeWindow();
 
 
             });

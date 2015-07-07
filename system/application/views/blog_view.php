@@ -38,6 +38,8 @@
                 <ul class="nav navbar-nav">
                     <li><a href="#">Home</a>
                     </li>
+                    <li><a href="<?php echo site_url();?>/login">Login</a>
+                    </li>
                     <li><a href="#">About</a>
                     </li>
                     <li><a href="#">Services</a>
@@ -57,13 +59,14 @@
                     <div >
                         <ul class="timeline">
                             <li class="time-label">
-                                <span class="bg-orange">Timeline Kegiatan UKM
+                                <span class="bg-orange">Timeline Agenda Kegiatan UKM di PENS
                                 </span>
                                 <br />
                                 <br />
                             </li>
                             <?php
                             //var_dump($dataagenda);
+
                               if (!empty($dataagenda)) {
                                 foreach($dataagenda as $row ) {
                             ?>
@@ -82,10 +85,10 @@
                                           echo $row->AGENDA_TEXT
                                       ?>
                                     </div>
-                                    <div class='timeline-footer'>
+                                    <!-- <div class='timeline-footer'>
                                         <a class="btn btn-primary btn-xs">Share</a>
                                         <a class="btn btn-danger btn-xs">Read More</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </li>
                             <?php } } ?>
@@ -101,8 +104,7 @@
 
         </div>
         <li>
-            <i class="fa fa-clock-o"></i>
-            <a class="scroll-top" href="#" title="Kembali Ke Atas">Top</a>
+            <a class="fa fa-angle-up" href="" title="Kembali Ke Atas"></a>
         </li>
     <!-- /.container -->
 

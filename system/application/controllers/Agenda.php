@@ -4,14 +4,14 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Agenda extends MY_Controller {
 
-    public function Agenda() {
+    function Agenda() {
         parent::MY_Controller();
         $this->load->model('ukm_model', '', true);
         $this->load->model('log_model', '', true);
         $this->load->model('agenda_model', '', true);
     }
 
-    public function index() {
+    function index() {
 
     }
 
@@ -25,21 +25,20 @@ class Agenda extends MY_Controller {
 
         if($this->form_validation->run() == TRUE){
 
-            $string = addslashes($this->input->post('tambah-time', TRUE));
-            $pemisah = strrpos($string, ' sampai ');
-            $timeto = trim(substr($string, $pemisah + 7));
-            $timefrom = trim(substr($string, 0, $pemisah));
 
-            $data = array(
-                'agenda_title' => addslashes($this->input->post('tambah-judul', TRUE)),
-                'agenda_text' => addslashes($this->input->post('tambah-teks', TRUE)),
-                'agenda_time' => $timefrom,
-                'agenda_timeto' => $timeto,
-                'agenda_status' => addslashes($this->input->post('tambah-status', TRUE)),
-                'ukm_id' => $this->access->get_ukmid()
-            );
+            $string   = addslashes($this->input->post('tambah-time', TRUE));
+            //$pemisah  = strrpos($string, ' sampai ');
+            $timefrom = trim(substr($string, 0, 19));
+            $timefromc = strtotime($timefrom);
+            $timeto   = trim(substr($string, 19 + 7));
+            $timefromd = strtotime($timeto);
 
-            $this->agenda_model->insert($data);
+            $idukm          = $this->access->get_ukmid();
+            $agenda_title   = addslashes($this->input->post('tambah-judul', TRUE));
+            $agenda_status  = addslashes($this->input->post('tambah-status', TRUE));
+            $agenda_teks    = addslashes($this->input->post('tambah-teks', TRUE));
+
+            $this->agenda_model->insert($idukm, $agenda_title, $timefrom, $timeto, $agenda_status, $agenda_teks);
 
             $status['status'] = 1;
             $status['pesan'] = 'Agenda baru berhasil ditambahkan';
@@ -62,24 +61,18 @@ class Agenda extends MY_Controller {
         if($this->form_validation->run() == TRUE){
 
             $string = addslashes($this->input->post('edit-time', TRUE));
-            $pemisah = strrpos($string, ' sampai ');
-            $timeto = trim(substr($string, $pemisah + 7));
-            $timefrom = trim(substr($string, 0, $pemisah));
+            // $pemisah = strrpos($string, ' sampai ');
+            $timefrom = trim(substr($string, 0, 19));
+            $timefromc = strtotime($timefrom);
+            $timeto   = trim(substr($string, 19 + 7));
+            $timefromd = strtotime($timeto);
 
             $judul = addslashes($this->input->post('edit-judul', TRUE));
             $teks = addslashes($this->input->post('edit-teks', TRUE));
             $idstatus = addslashes($this->input->post('edit-status', TRUE));
             $idagenda = addslashes($this->input->post('edit-id', TRUE));
 
-            $data = array(
-                'agenda_title' => $judul,
-                'agenda_text' => $teks,
-                'agenda_time' => $timefrom,
-                'agenda_timeto' => $timeto,
-                'agenda_status' => $idstatus
-            );
-
-            $this->agenda_model->update($idagenda,$data);
+            $this->agenda_model->update($idagenda, $judul, $timefrom, $timeto, $idstatus, $teks);
 
             $status['status'] = 1;
             $status['pesan'] = "Perubahan pada Agenda berhasil disimpan";
@@ -98,7 +91,7 @@ class Agenda extends MY_Controller {
 
       if($this->form_validation->run() == TRUE){
         $id = addslashes($this->input->post('hapus-id', TRUE));
-        $this->agenda_model->update($id,array("agenda_status" => 2));
+        $this->agenda_model->update($id);
 
         $status['status'] = 1;
         $status['pesan'] = 'Agenda "' . addslashes($this->input->post('hapus-uname', TRUE)) . '" berhasil dihapus';
@@ -153,11 +146,11 @@ class Agenda extends MY_Controller {
         return $sort_dir;
     }
 
-    public function get_databox() {
+    function get_databox() {
         $ukmid = $this->access->get_ukmid();
         // data buat box
-        
-        $dat = $this->agenda_model->get_subtotal($ukmid, 2);
+
+        $dat = $this->agenda_model->get_total($ukmid);
         $data['boxsemua'] = $dat->_fetch_object();
         $dat = $this->agenda_model->get_subtotal($ukmid, 0);
         $data['boxdraft'] = $dat->_fetch_object();

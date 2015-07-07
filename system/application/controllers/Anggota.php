@@ -4,14 +4,14 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Anggota extends MY_Controller {
 
-    public function Anggota() {
+    function Anggota() {
         parent::MY_Controller();
         $this->load->model('ukm_model', '', true);
         $this->load->model('log_model', '', true);
         $this->load->model('anggota_model', '', true);
     }
 
-    public function index() {
+    function index() {
 
     }
 
@@ -20,14 +20,12 @@ class Anggota extends MY_Controller {
         $this->form_validation->set_rules('tambah-nama', 'Nama','required|strip_tags');
         $this->form_validation->set_rules('tambah-level', 'Level','required|strip_tags');
 
-        if($this->form_validation->run() == TRUE){
-            $data = array(
-                'anggota_name' => addslashes($this->input->post('tambah-nama', TRUE)),
-                'anggota_level' => addslashes($this->input->post('tambah-level', TRUE)),
-                'ukm_id' => $this->access->get_ukmid()
-            );
+        $anggota_ukm    = $this->access->get_ukmid();
+        $anggota_name   = addslashes($this->input->post('tambah-nama', TRUE));
+        $anggota_level  = addslashes($this->input->post('tambah-level', TRUE));
 
-            $this->anggota_model->insert($data);
+        if($this->form_validation->run() == TRUE){
+            $this->anggota_model->insert($anggota_ukm, $anggota_name, $anggota_level);
 
             $status['status'] = 1;
             $status['pesan'] = 'Anggota baru berhasil ditambahkan';
@@ -53,13 +51,7 @@ class Anggota extends MY_Controller {
           $idlevel = addslashes($this->input->post('edit-level', TRUE));
           $idanggota = addslashes($this->input->post('edit-id', TRUE));
 
-          $data = array(
-            'anggota_name' => $nama,
-            'anggota_status' => $idstatus,
-            'anggota_level' => $idlevel
-          );
-
-          $this->anggota_model->update($idanggota,$data);
+          $this->anggota_model->update($idanggota, $nama, $idstatus, $idlevel);
 
           $status['status'] = 1;
           $status['pesan'] = "Perubahan pada Anggota berhasil disimpan";
@@ -90,51 +82,51 @@ class Anggota extends MY_Controller {
       echo json_encode($status);
     }
 
-    function getanggota() {
-        // variable initialization
-        $search = "";
-        $start = 0;
-        $rows = 6;
-
-        // get search value (if any)
-        if (isset($_GET['sSearch']) && $_GET['sSearch'] != "") {
-            $search = $_GET['sSearch'];
-        }
-
-        // limit
-        $start = $this->get_start();
-        $rows = $this->get_rows();
-        $ukmid = $this->access->get_ukmid();
-
-        // run query to get user listing
-        $query = $this->anggota_model->get_daftaranggota($ukmid, $start, $rows, $search);
-        $iFilteredTotal = $query->num_rows();
-        $iTotal = $this->anggota_model->get_count_daftaranggota($ukmid, $search)->row()->Total;
-
-        $output = array(
-            "sEcho" => intval($_GET['sEcho']),
-            "iTotalRecords" => $iTotal,
-            "iTotalDisplayRecords" => $iTotal,
-            "aaData" => array()
-        );
-
-        // get result after running query and put it in array
-        $i = $start;
-        $counter = $query->result();
-        foreach ($counter as $temp) {
-            $record = array();
-            $record[] = $temp->ID;
-            $record[] = $temp->Nama;
-            $record[] = $temp->Status;
-            $record[] = $temp->Level;
-            $record[] = '<button class="btn btn-xs btn-flat btn-danger" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Level).'\')"><i class="fa fa-times"></i> Hapus</button>
-                        <button class="btn btn-xs btn-flat btn-primary" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->StatusID).'\', \''.addslashes($temp->LevelID).'\')"><i class="fa fa-pencil"></i> Edit</button>';
-
-            $output['aaData'][] = $record;
-        }
-        // format it to JSON, this output will be displayed in datatable
-        echo json_encode($output);
-    }
+    // function getanggota() {
+    //     // variable initialization
+    //     $search = "";
+    //     $start = 0;
+    //     $rows = 6;
+    //
+    //     // get search value (if any)
+    //     if (isset($_GET['sSearch']) && $_GET['sSearch'] != "") {
+    //         $search = $_GET['sSearch'];
+    //     }
+    //
+    //     // limit
+    //     $start = $this->get_start();
+    //     $rows = $this->get_rows();
+    //     $ukmid = $this->access->get_ukmid();
+    //
+    //     // run query to get user listing
+    //     $query = $this->anggota_model->get_daftaranggota($ukmid, $start, $rows, $search);
+    //     $iFilteredTotal = $query->num_rows();
+    //     $iTotal = $this->anggota_model->get_count_daftaranggota($ukmid, $search)->row()->Total;
+    //
+    //     $output = array(
+    //         "sEcho" => intval($_GET['sEcho']),
+    //         "iTotalRecords" => $iTotal,
+    //         "iTotalDisplayRecords" => $iTotal,
+    //         "aaData" => array()
+    //     );
+    //
+    //     // get result after running query and put it in array
+    //     $i = $start;
+    //     $counter = $query->result();
+    //     foreach ($counter as $temp) {
+    //         $record = array();
+    //         $record[] = $temp->ID;
+    //         $record[] = $temp->Nama;
+    //         $record[] = $temp->Status;
+    //         $record[] = $temp->Level;
+    //         $record[] = '<button class="btn btn-xs btn-flat btn-danger" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Level).'\')"><i class="fa fa-times"></i> Hapus</button>
+    //                     <button class="btn btn-xs btn-flat btn-primary" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->StatusID).'\', \''.addslashes($temp->LevelID).'\')"><i class="fa fa-pencil"></i> Edit</button>';
+    //
+    //         $output['aaData'][] = $record;
+    //     }
+    //     // format it to JSON, this output will be displayed in datatable
+    //     echo json_encode($output);
+    // }
 
     /**
      * fungsi tambahan
@@ -180,10 +172,14 @@ class Anggota extends MY_Controller {
     function get_databox() {
         $ukmid = $this->access->get_ukmid();
         // data buat box
-        $data['boxanggota'] = $this->anggota_model->get_total(array("anggota_level" => 10, "ukm_id" => $ukmid));
-        $data['boxpengurus'] = $this->anggota_model->get_total(array("anggota_level" => 11, "ukm_id" => $ukmid));
-        $data['boxnon'] = $this->anggota_model->get_total(array("anggota_status" => 0, "ukm_id" => $ukmid));
-        $data['boxaktif'] = $this->anggota_model->get_total(array("anggota_status" => 1, "ukm_id" => $ukmid));
+        $dat = $this->anggota_model->get_totaljabatan($ukmid, 10);
+        $data['boxanggota'] = $dat->_fetch_object();
+        $dat = $this->anggota_model->get_totaljabatan($ukmid, 11);
+        $data['boxpengurus'] = $dat->_fetch_object();
+        $dat = $this->anggota_model->get_subtotal($ukmid, 0);
+        $data['boxnon'] = $dat->_fetch_object();
+        $dat =$this->anggota_model->get_subtotal($ukmid, 1);
+        $data['boxaktif'] = $dat->_fetch_object();
 
         echo json_encode($data);
     }

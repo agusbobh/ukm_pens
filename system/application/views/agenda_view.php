@@ -18,7 +18,7 @@
                     <!-- info selamat datang -->
                     <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Di halaman ini Anda bisa menambahkan, memodifikasi informasi, dan menghapus agenda
+                        Di halaman ini Anda bisa menambahkan, memodifikasi informasi, dan menghapus Agenda
                     </div>
 
                     <!-- Main row -->
@@ -296,16 +296,17 @@
                   </div>
                   <div class="modal-body">
                       <div class="box-body">
-                          <dl class="dl-horizontal">
                               <dt>Judul</dt>
                               <dd><span id="lihat-judul"></span></dd>
+                              <br></br>
                               <dt>Waktu</dt>
                               <dd><span id="lihat-waktu"></span></dd>
+                              <br></br>
                               <dt>Deskripsi</dt>
                               <dd><span id="lihat-teks"></span></dd>
+                              <br></br>
                               <dt>Status</dt>
                               <dd><span id="lihat-status"></span></dd>
-                          </dl>
                       </div>
                   </div>
                   <div class="modal-footer">

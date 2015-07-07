@@ -19,7 +19,7 @@ class Agenda_model extends Model {
             // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM agenda
-                    WHERE  agenda_id = ".$parameter." ";
+                    WHERE  ukm_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
@@ -30,7 +30,7 @@ class Agenda_model extends Model {
             //   return $row->Total;
             // }
             //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
-            $sql = "SELECT count(*) AS Total FROM anggota";
+            $sql = "SELECT count(*) AS Total FROM agenda";
             $query = $this->db->query($sql);
             return $query;
         }
@@ -38,23 +38,33 @@ class Agenda_model extends Model {
 
     function get_subtotal($ukmid, $status) {
             $sql = "SELECT count(*) AS Total FROM agenda
-                    WHERE  agenda_id = ".$ukmid." AND agenda_status = ".$status." ";
+                    WHERE  ukm_id = ".$ukmid." AND agenda_status = ".$status." ";
             $query = $this->db->query($sql);
             return $query;
     }
 
-    function insert($data) {
-        $this->db->insert('agenda', $data);
+    function insert($idukm, $agenda_title, $timefrom, $timeto, $agenda_status, $agenda_teks) {
+        // $this->db->insert('agenda', $data);
+        $sql = "INSERT INTO agenda (AGENDA_ID, UKM_ID, AGENDA_TITLE, AGENDA_TIME, AGENDA_TIMETO, AGENDA_STATUS, AGENDA_TEXT)"
+                . "VALUES(AGENDA_ID_SEQ.NEXTVAL,'".$idukm."', '".$agenda_title."', TO_DATE('".$timefrom."', 'YYYY-MM-DD HH:MI:SS'), TO_DATE('".$timeto."', 'YYYY-MM-DD HH:MI:SS') , '".$agenda_status."', '".$agenda_teks."')";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function delete($id) {
-        $this->db->where('agenda_id', $id);
-        $this->db->delete('agenda');
+        // $this->db->where('agenda_id', $id);
+        // $this->db->delete('agenda');
+        $sql = "UPDATE agenda SET agenda_status = '2' WHERE agenda_id = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
-    function update($id, $data) {
-        $this->db->where('agenda_id', $id);
-        $this->db->update('agenda', $data);
+    function update($idagenda, $judul, $timefrom, $timeto, $idstatus, $teks) {
+        // $this->db->where('agenda_id', $id);
+        // $this->db->update('agenda', $data);
+        $sql = "UPDATE agenda SET agenda_title = '".$judul."', agenda_time = '".$timefrom."', agenda_timeto = '".$timeto."', agenda_status = '".$idstatus."', agenda_text = '".$teks."'  WHERE agenda_id = '".$idagenda."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_agenda($id) {

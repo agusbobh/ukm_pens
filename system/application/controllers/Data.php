@@ -34,26 +34,19 @@ class Data extends MY_Controller {
                 $status['status'] = 0;
                 $status['pesan'] = $this->upload->display_errors();
             } else {
-                $data = array(
-                    'ukm_id' => $this->access->get_ukmid(),
-                    'data_file' => $this->upload->data('file_name'),
-                    'data_msg' => addslashes($this->input->post('baru-pesan', TRUE)),
-                    'data_from' => $this->access->get_ukmid()
-                );
+                // $dataukm = $this->ukm_model->get_ukm(array("ukm_id" =>$this->access->get_ukmid()))->row();
+                $dataukm = $this->access->get_ukmid();
+                $ukm_name = $this->access->get_ukmname();
+                $idukm = $this->access->get_ukmid();
+                $iduser = $this->access->get_userid();
+                $teks = 'User ' . $this->access->get_username(). 'dari UKM ' . $this->access->get_username() . ' mengirimkan laporan';
+                $notif_from = $this->access->get_userid();
 
-                $dataukm = $this->ukm_model->get_ukm(array("ukm_id" =>$this->access->get_ukmid()))->row();
+                $data_laporan = $this->upload->data();
+                $data_msg = addslashes($this->input->post('baru-pesan', TRUE));
 
-                $datanotif = array(
-                    'ukm_id' => $this->access->get_ukmid(),
-                    'user_id' => $this->access->get_userid(),
-                    'notif_activity' => "User " . $this->access->get_username() . " dari UKM " . $dataukm->UKM_NAME . " mengirimkan laporan",
-                    'notif_from' => $this->access->get_userid(),
-                    'notif_to' => 2,
-                    'notif_tipe' => 1
-                );
-
-                $this->notif_model->insert($datanotif);
-                $this->data_model->insert($data);
+                $this->data_model->insert($idukm, $data_laporan['file_name'], $data_msg);
+                $this->notif_model->insert_notif($iduser, $idukm, $teks);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Laporan berhasil dikirim';
@@ -80,32 +73,27 @@ class Data extends MY_Controller {
         $this->form_validation->set_rules('edit-pesan', 'Pesan','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-id', 'Data ID','trim|required|strip_tags');
         $id = addslashes($this->input->post('edit-id', TRUE));
+        $data_msg = addslashes($this->input->post('edit-pesan', TRUE));
+        $data_file = $this->upload->data('file_name');
+
 
         if($this->form_validation->run() == TRUE){
             if($_FILES['edit-attachment']['size'] == 0) {
-                $data = array(
-                    'data_msg' => addslashes($this->input->post('edit-pesan', TRUE))
-                );
-
-                $this->data_model->update($id,$data);
+                $this->data_model->update($id,$data_msg);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Data laporan baru berhasil disimpan';
             } else {
-                $query = $this->data_model->get_data(array("data_id" => $id))->row();
-                $dpath = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $query->DATA_FILE;
+                // $query = $this->data_model->get_data(array("data_id" => $id))->row();
+                $query = $this->data_model->get_data($id);
+                $dpath = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $query->DATA_FILE_LAPORAN;
                 $this->deleteFiles($dpath);
 
                 if (!$this->upload->do_upload('edit-attachment')) {
                     $status['status'] = 0;
                     $status['pesan'] = $this->upload->display_errors();
                 } else {
-                    $data = array(
-                        'data_file' => $this->upload->data('file_name'),
-                        'data_msg' => addslashes($this->input->post('edit-pesan', TRUE))
-                    );
-
-                    $this->data_model->update($id,$data);
+                    $this->data_model->update($id,$data_file, $data_msg);
 
                     $status['status'] = 1;
                     $status['pesan'] = 'Data laporan beserta file laporan baru berhasil disimpan';
@@ -141,8 +129,9 @@ class Data extends MY_Controller {
             $path = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
 
             if($opfile == "hapusfile") {
-                $data = $this->data_model->get_data(array("data_id" => $id))->row();
-                $dpath = $path . $data->DATA_FILE;
+                // $data = $this->data_model->get_data(array("data_id" => $id))->row();
+                $data = $this->data_model->get_data($id);
+                $dpath = $path . $data->DATA_FILE_LAPORAN;
                 $this->deleteFiles($dpath);
                 $this->data_model->delete($id);
                 $pesan = 'Data ' . addslashes($this->input->post('hapus-nama', TRUE)) . ' beserta filenya ';
@@ -178,7 +167,8 @@ class Data extends MY_Controller {
 
             if($id == 40) {
                 if($opfile == "hapusfile") {
-                    $data = $this->data_model->get_data(array("data_id" => $id))->row();
+                    // $data = $this->data_model->get_data(array("data_id" => $id))->row();
+                    $data = $this->data_model->get_data($id);
                     $dpath = $path . "*";
                     $this->deleteFiles($dpath);
                     $this->data_model->deleteall();
@@ -236,8 +226,9 @@ class Data extends MY_Controller {
 
     function download($id){
         $this->load->helper('download');
-        $data = $this->data_model->get_data(array("data_id" => $id))->row();
-        $path = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $data->DATA_FILE;
+        // $data = $this->data_model->get_data(array("data_id" => $id))->row();
+        $data = $this->data_model->get_data($id);
+        $path = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $data->DATA_FILE_LAPORAN;
         force_download($path, NULL);
     }
 

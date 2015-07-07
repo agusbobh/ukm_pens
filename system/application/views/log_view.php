@@ -18,7 +18,7 @@
                     <!-- info selamat datang -->
                     <div class="alert alert-info alert-dismissable" style="padding:5px 35px 5px 5px; margin: 0 0 5px 0">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Di halaman ini Anda bisa melihat semua log yang ada
+                        Di halaman ini Anda bisa melihat semua aktifitas login / logout semua user.
                     </div>
 
                     <!-- Main row -->
