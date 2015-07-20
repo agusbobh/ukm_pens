@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="<?php echo base_url();?>system/public/assets/frontend/img/ico/favicon.ico">
+    <link rel="shortcut icon" href="<?php echo base_url();?>system/public/assets/img/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="<?php echo base_url();?>system/public/assets/frontend/img/ico/apple-touch-icon.html">
     <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url();?>system/public/assets/frontend/img/ico/apple-touch-icon-72x72.html">
     <link rel="apple-touch-icon" sizes="114x114" href="<?php echo base_url();?>system/public/assets/frontend/img/ico/apple-touch-icon-114x114.html">
     <title>//SIM UKM PENS</title>
+
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url();?>system/public/assets/front/css/bootstrap.css" rel="stylesheet">
  <!-- Fontawesome core CSS -->
@@ -31,7 +32,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">YOUR LOGO </a>
+                <!-- <a class="navbar-brand" href="#">YOUR LOGO </a> -->
+                    <img src="<?php echo base_url();?>system/public/assets/img/avatar10.png" height="50px" class="img-circle" alt="User Image"/>
             </div>
             <!-- Collect the nav links for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">

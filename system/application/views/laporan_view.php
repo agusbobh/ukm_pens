@@ -42,6 +42,7 @@
                                     <table id="table-data" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>UKM</th>
                                                 <th>Pesan</th>
@@ -56,6 +57,9 @@
                                           foreach($record_laporan as $row){
                                           ?>
                                             <tr>
+                                              <td>
+                                                <?php echo $row['NO']?>
+                                              </td>
                                               <td>
                                                 <?php echo $row['ID']?>
                                               </td>
@@ -84,6 +88,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>UKM</th>
                                                 <th>Pesan</th>
@@ -297,7 +302,7 @@
                         <div class="box-body table-responsive">
                             <span id="form-pesan-edit">
                             </span>
-                            <?php echo form_open('data/editdata', 'id="form-edit"') ?>
+                            <?php echo form_open_multipart('data/editdata', array('id' => 'form-edit')) ?>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -375,24 +380,25 @@
                 $('#edit-file').val(file);
                 $('#edit-namaukm').val(ukm);
                 $('#edit-pesan').val(pesan);
-                $('#edit-download').attr("href", "http://ukm.pens.ac.id/data/download/"+id+"");
+                // $('#edit-download').attr("href", "http://ukm.pens.ac.id/data/download/"+id+"");
+                $('#edit-download').attr("href", "<?php echo site_url();?>/data/download/"+id);
             }
 
-            // function resizeWindow(e){
-            //     var newWindowWidth = $(window).width();
-            //     var oTable = $('#table-data').dataTable();
-            //     if(newWindowWidth > 1024){
-            //             // Do Something
-            //         oTable.fnSetColumnVis( 2, true );
-            //         oTable.fnSetColumnVis( 4, true );
-            //     }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
-            //             // Do Something
-            //         oTable.fnSetColumnVis( 2, false );
-            //         oTable.fnSetColumnVis( 4, false );
-            //     }else if(newWindowWidth < 600){
-            //
-            //     }
-            // }
+            function resizeWindow(e){
+                var newWindowWidth = $(window).width();
+                var oTable = $('#table-data').dataTable();
+                if(newWindowWidth > 1024){
+                        // Do Something
+                    oTable.fnSetColumnVis( 2, true );
+                    oTable.fnSetColumnVis( 4, true );
+                }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
+                        // Do Something
+                    oTable.fnSetColumnVis( 2, false );
+                    oTable.fnSetColumnVis( 4, false );
+                }else if(newWindowWidth < 600){
+
+                }
+            }
 
 
             $(document).ready(function() {
@@ -598,8 +604,8 @@
                 });
                 <?php } ?>
 
-                // $(window).bind("resize", resizeWindow);
-                // resizeWindow();
+                $(window).bind("resize", resizeWindow);
+                resizeWindow();
 
 
             });

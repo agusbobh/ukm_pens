@@ -38,6 +38,7 @@
                                     <table id="table-anggota" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Status</th>
@@ -50,6 +51,9 @@
                                           foreach($record_anggota as $row){
                                           ?>
                                             <tr>
+                                              <td>
+                                                <?php echo $row['NO']?>
+                                              </td>
                                               <td>
                                                 <?php echo $row['ID']?>
                                               </td>
@@ -72,6 +76,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Status</th>

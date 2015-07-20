@@ -38,6 +38,7 @@
                                     <table id="table-user" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>UKM</th>
                                                 <th>Username</th>
@@ -52,6 +53,9 @@
                                           foreach($record_user as $row){
                                           ?>
                                             <tr>
+                                              <td>
+                                                <?php echo $row['NO']?>
+                                              </td>
                                               <td>
                                                 <?php echo $row['ID']?>
                                               </td>
@@ -80,6 +84,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>UKM</th>
                                                 <th>Username</th>

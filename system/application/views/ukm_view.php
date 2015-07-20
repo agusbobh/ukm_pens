@@ -38,6 +38,7 @@
                                     <table id="table-ukm" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Kontak</th>
@@ -52,6 +53,9 @@
                                           foreach($record_ukm as $row){
                                           ?>
                                             <tr>
+                                              <td>
+                                                <?php echo $row['NO']?>
+                                              </td>
                                               <td>
                                                 <?php echo $row['ID']?>
                                               </td>
@@ -80,6 +84,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Kontak</th>
@@ -354,6 +359,23 @@
                 $('#info-id').val(id);
             }
 
+            function resizeWindow(e){
+                var newWindowWidth = $(window).width();
+                var oTable = $('#table-data').dataTable();
+                if(newWindowWidth > 1024){
+                        // Do Something
+                    oTable.fnSetColumnVis( 2, true );
+                    oTable.fnSetColumnVis( 4, true );
+                }else if((newWindowWidth >= 600) && (newWindowWidth <= 1050)){
+                        // Do Something
+                    oTable.fnSetColumnVis( 2, false );
+                    oTable.fnSetColumnVis( 4, false );
+                }else if(newWindowWidth < 600){
+
+                }
+            }
+
+
             $(document).ready(function() {
                 $("[data-mask]").inputmask();
                 $('#modal-tambah').on('shown.bs.modal', function (e) {
@@ -497,7 +519,10 @@
                     });
                     return false;
                 });
+                $(window).bind("resize", resizeWindow);
+                resizeWindow();
             });
+
         </script>
 
     </body>

@@ -54,13 +54,21 @@ class Data_model extends Model {
         $this->db->empty_table('data');
     }
 
-    function update($id, $data) {
-        $this->db->where('data_id', $id);
-        $this->db->update('data', $data);
+    function update($id, $data_file, $data_msg) {
+        // $this->db->where('data_id', $id);
+        // $this->db->update('data', $data);
+        $sql = "UPDATE data SET DATA_FILE_LAPORAN = '".$data_file."', DATA_MSG = '".$data_msg."' "
+              ."WHERE DATA_ID = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
-    function updateall($data) {
-        $this->db->update('data', $data);
+    function update_info($id, $data_msg) {
+        // $this->db->update('data', $data);
+        $sql = "UPDATE data SET DATA_MSG = '".$data_msg."' "
+              ."WHERE DATA_ID = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
     }
 
     function get_data($parameter) {
@@ -74,10 +82,11 @@ class Data_model extends Model {
 
         //return (count($query->num_rows()) > 0 ? $query : NULL);
         */
-        $sql = "SELECT data.*, ukm.ukm_name AS UKM, user_sim.user_name AS Tujuan FROM data
-                JOIN ukm ON data.ukm_id = ukm.ukm_id
-                JOIN user_sim ON data.data_to = user_sim.user_id
-                WHERE  user_sim.user_id = ".$parameter." ";
+        //$sql = "SELECT data.*, ukm.ukm_name AS UKM, user_sim.user_name AS Tujuan FROM data
+              //  JOIN ukm ON data.ukm_id = ukm.ukm_id
+              //  JOIN user_sim ON data.data_to = user_sim.user_id
+              //  WHERE  user_sim.user_id = ".$parameter." ";
+        $sql = "SELECT * from data where DATA_ID = $parameter";
         $query = $this->db->query($sql);
         return $query;
     }

@@ -38,6 +38,7 @@
                                     <table id="table-agenda" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>ID</th>
                                                 <th>Judul</th>
                                                 <th>Waktu</th>
@@ -50,6 +51,9 @@
                                           foreach($record_agenda as $row){
                                           ?>
                                             <tr>
+                                              <td>
+                                                <?php echo $row['NO']?>
+                                              </td>
                                               <td>
                                                 <?php echo $row['ID']?>
                                               </td>

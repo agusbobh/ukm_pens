@@ -24,10 +24,10 @@ class Notifikasi extends MY_Controller {
 
             $log_id   = $this->access->get_userid();
             $log_teks = 'User ' . $this->access->get_username() . ' telah menghapus semua notifikasi yang diterimanya ';
-            if($id == 42) {
-                //$this->log_model->insert($log_id, $log_teks);
+            if($id == 42 OR $id == 41) {
+                // $this->log_model->insert($log_id, $log_teks);
                 $this->notif_model->updateall(2, $notif_to);
-
+                
                 $status['status'] = 1;
                 $status['pesan'] = 'Semua notifikasi berhasil dihapus';
             } else {
@@ -52,7 +52,7 @@ class Notifikasi extends MY_Controller {
             $notifid = addslashes($this->input->post('notifid', TRUE));
             $notif_to = $this->access->get_ukmid();
 
-            if($id == 42) {
+            if($id == 42 OR $id == 41) {
                 $this->notif_model->update($notifid, 1, $notif_to);
 
                 $status['status'] = 1;
@@ -80,7 +80,7 @@ class Notifikasi extends MY_Controller {
             $log_id   = $this->access->get_userid();
             $log_teks = 'User ' . $this->access->get_username() . ' menandai telah dibaca semua notifikasi yang diterimanya.';
 
-            if($id == 42) {
+            if($id == 42 OR $id == 41) {
                 $this->notif_model->updateall(1, $notif_to);
                 //$this->log_model->insert($log_id, $log_teks);
 

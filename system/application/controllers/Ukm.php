@@ -17,7 +17,7 @@ class Ukm extends MY_Controller {
     function tambahukm(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('tambah-kontak', 'Kontak','trim|required|strip_tags');
-        $this->form_validation->set_rules('tambah-user', 'User','strip_tags');
+        $this->form_validation->set_rules('tambah-user', 'User','trim|strip_tags');
         $this->form_validation->set_rules('tambah-nama', 'Nama UKM','trim|required|strip_tags|min_length[3]|callback_cek_uname');
 
         $user_id    = addslashes($this->input->post('tambah-user', TRUE));
@@ -40,9 +40,9 @@ class Ukm extends MY_Controller {
 
     function editukm(){
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('edit-kontak', 'Kontak','trim|required|strip_tags');
-        $this->form_validation->set_rules('edit-nama', 'Nama UKM','required|strip_tags');
-        $this->form_validation->set_rules('edit-user', 'User','required|strip_tags');
+        $this->form_validation->set_rules('edit-kontak', 'Kontak','required|strip_tags');
+        $this->form_validation->set_rules('edit-nama', 'Nama UKM','trim|required|strip_tags');
+        $this->form_validation->set_rules('edit-user', 'User','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-id', 'UKM ID','required|strip_tags');
 
         if($this->form_validation->run() == TRUE){
@@ -99,7 +99,7 @@ class Ukm extends MY_Controller {
     function updateinfo(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('info-id', 'UKM ID','required|strip_tags');
-        $this->form_validation->set_rules('info-teks', 'Info Teks','required|strip_tags|trim|max_length[100]');
+        $this->form_validation->set_rules('info-teks', 'Info Teks','trim|required|strip_tags|trim|max_length[100]');
 
         if($this->form_validation->run() == TRUE){
             $id = addslashes($this->input->post('info-id', TRUE));

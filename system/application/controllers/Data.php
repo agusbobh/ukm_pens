@@ -74,26 +74,40 @@ class Data extends MY_Controller {
         $this->form_validation->set_rules('edit-id', 'Data ID','trim|required|strip_tags');
         $id = addslashes($this->input->post('edit-id', TRUE));
         $data_msg = addslashes($this->input->post('edit-pesan', TRUE));
-        $data_file = $this->upload->data('file_name');
 
 
         if($this->form_validation->run() == TRUE){
             if($_FILES['edit-attachment']['size'] == 0) {
-                $this->data_model->update($id,$data_msg);
+                $this->data_model->update_info($id,$data_msg);
 
                 $status['status'] = 1;
                 $status['pesan'] = 'Data laporan baru berhasil disimpan';
             } else {
                 // $query = $this->data_model->get_data(array("data_id" => $id))->row();
-                $query = $this->data_model->get_data($id);
-                $dpath = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $query->DATA_FILE_LAPORAN;
+                $data = $this->data_model->get_data($id);
+                $d = '';
+                foreach($data as $temp){
+                  //echo $temp->DATA_FILE_LAPORAN;
+                  $d = $temp->DATA_FILE_LAPORAN;
+                  // echo $d;
+                }
+                $a = $data->_fetch_object();
+
+                foreach ($a as $temp) {
+                  //$b = $temp['DATA_FILE_LAPORAN'];
+                  $b = $temp->DATA_FILE_LAPORAN;
+                  //echo "fff";
+                }
+
+                $dpath = $_SERVER['DOCUMENT_ROOT'].'/ukm/uploads/'. $b ;
                 $this->deleteFiles($dpath);
 
                 if (!$this->upload->do_upload('edit-attachment')) {
                     $status['status'] = 0;
                     $status['pesan'] = $this->upload->display_errors();
                 } else {
-                    $this->data_model->update($id,$data_file, $data_msg);
+                  $data_file = $this->upload->data();
+                    $this->data_model->update($id,$data_file['file_name'], $data_msg);
 
                     $status['status'] = 1;
                     $status['pesan'] = 'Data laporan beserta file laporan baru berhasil disimpan';
@@ -109,11 +123,11 @@ class Data extends MY_Controller {
         echo json_encode($status);
     }
 
-    function deleteFiles($path){
-        $files = glob($path); // get all file names
+    function deleteFiles($dpath){
+        $files = glob($dpath); // get all file names
         foreach($files as $file){ // iterate files
             if(file_exists($file)) {
-                unlink($file) or die('Gagal menghapus: ' . $path); // delete file
+                unlink($file) or die('Gagal menghapus: ' . $dpath); // delete file
                 //echo $file.'file deleted';
             }
         }
@@ -126,7 +140,7 @@ class Data extends MY_Controller {
         if($this->form_validation->run() == TRUE){
             $id = addslashes($this->input->post('hapus-id', TRUE));
             $opfile = addslashes($this->input->post('hapus-file', TRUE));
-            $path = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
+            $path = $_SERVER['DOCUMENT_ROOT'].'/ukm/uploads/';
 
             if($opfile == "hapusfile") {
                 // $data = $this->data_model->get_data(array("data_id" => $id))->row();
@@ -228,8 +242,29 @@ class Data extends MY_Controller {
         $this->load->helper('download');
         // $data = $this->data_model->get_data(array("data_id" => $id))->row();
         $data = $this->data_model->get_data($id);
-        $path = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $data->DATA_FILE_LAPORAN;
-        force_download($path, NULL);
+        $d = '';
+        foreach($data as $temp){
+          //echo $temp->DATA_FILE_LAPORAN;
+          $d = $temp->DATA_FILE_LAPORAN;
+          // echo $d;
+        }
+        $a = $data->_fetch_object();
+        //$a = '';
+        //$path = $_SERVER['DOCUMENT_ROOT'].'/uploads/' . $a->DATA_FILE_LAPORAN;
+
+        // echo $path;
+        foreach ($a as $temp) {
+          //$b = $temp['DATA_FILE_LAPORAN'];
+          $b = $temp->DATA_FILE_LAPORAN;
+          //echo "fff";
+        }
+
+        //$path =  file_get_contents('"'.base_url().'ukm/uploads/'.trim($b).'"');
+        redirect(base_url().'uploads/'.trim($b));
+        //$path = "isisisisis";
+        //force_download($b, $path);
+        //echo $path;
+
     }
 
     function updateinfo(){

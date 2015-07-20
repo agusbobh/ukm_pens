@@ -125,6 +125,7 @@ class Dashboard extends MY_Controller {
             }
 
             $record[] = array();
+            $record[$i]['NO'] = $i+1;
             $record[$i]['ID'] = $temp->ID;
             $record[$i]['UKM'] = $temp->UKM;
             $record[$i]['PESAN'] = $temp->PESAN;
@@ -136,7 +137,7 @@ class Dashboard extends MY_Controller {
                         <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-undo"></i> Undo</button>
                         '. $tambahan .'';
             } else {
-                $url = site_url() . "data/download/" . $temp->ID;
+                $url = site_url() . "/data/download/" . $temp->ID;
                 $record[$i]['OPSI'] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
                                 <i class="fa fa-download"></i> Download
                             </a>';
@@ -189,6 +190,7 @@ class Dashboard extends MY_Controller {
         $i = 0;
         $record = array();
         foreach ($counter as $temp) {
+            $record[$i]['NO'] = $i+1;
             $record[$i]['ID'] = $temp->ID;
             $record[$i]['UKM'] = $temp->UKM;
             $record[$i]['USERNAME'] = $temp->USERNAME;
@@ -244,6 +246,7 @@ class Dashboard extends MY_Controller {
         $i = 0;
         $record = array();
         foreach ($counter as $temp){
+            $record[$i]['NO'] = $i+1;
             $record[$i]['ID'] = $temp->ID;
             $record[$i]['NAMA'] = $temp->NAMA;
             $record[$i]['KONTAK'] = $temp->KONTAK;
@@ -298,6 +301,7 @@ class Dashboard extends MY_Controller {
         $record = array();
         foreach ($a as $temp) {
             $record[] = array();
+            $record[$i]['NO'] = $i+1;
             $record[$i]['ID'] = $temp->ID;
             $record[$i]['NAMA'] = $temp->NAMA;
             $record[$i]['STATUS'] = $temp->STATUS;
@@ -334,6 +338,7 @@ class Dashboard extends MY_Controller {
         $record = array();
         foreach ($a as $temp) {
             $record[] = array();
+            $record[$i]['NO'] = $i+1;
             $record[$i]['ID'] = $temp->ID;
             $record[$i]['TITLE'] = $temp->TITLE;
             $record[$i]['TIME'] = $temp->TIME;
