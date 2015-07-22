@@ -86,6 +86,13 @@ class Agenda_model extends Model {
         return $query;
     }
 
+    function get_list_agenda() {
+        $sql = "SELECT *  FROM agenda
+                WHERE agenda_status != 0 ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     function view_agenda(){
       /*
       $result = array();
@@ -99,7 +106,7 @@ class Agenda_model extends Model {
       }
       return $result;
       */
-      $sql    = "select * from agenda join ukm on ukm.ukm_id = agenda.ukm_id order by agenda_time desc";         //ganti sql sesuai database
+      $sql    = "select * from agenda join ukm on ukm.ukm_id = agenda.ukm_id where agenda_status != 0 order by agenda_time desc";         //ganti sql sesuai database
 
       $query = $this->db->query($sql);
       return $query;

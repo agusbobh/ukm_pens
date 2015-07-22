@@ -63,6 +63,19 @@ class Data_model extends Model {
         return $query;
     }
 
+    function update_status_file($id) {
+        $sql = "UPDATE data SET DATA_STATUS ='2' "
+              ."WHERE DATA_ID = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function update_status_allfile($id) {
+        $sql = "UPDATE data SET DATA_STATUS ='2' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     function update_info($id, $data_msg) {
         // $this->db->update('data', $data);
         $sql = "UPDATE data SET DATA_MSG = '".$data_msg."' "
@@ -72,20 +85,6 @@ class Data_model extends Model {
     }
 
     function get_data($parameter) {
-        /*$this->db->select('data.*, ukm.ukm_name AS UKM, user_sim.user_name AS Tujuan');
-        $this->db->from('data');
-        $this->db->join('ukm', 'data.ukm_id = ukm.ukm_id');
-        $this->db->join('user_sim', 'data.data_to = user_sim.user_id');
-        $this->db->where($parameter);
-        $query = $this->db->get();
-        return $query;
-
-        //return (count($query->num_rows()) > 0 ? $query : NULL);
-        */
-        //$sql = "SELECT data.*, ukm.ukm_name AS UKM, user_sim.user_name AS Tujuan FROM data
-              //  JOIN ukm ON data.ukm_id = ukm.ukm_id
-              //  JOIN user_sim ON data.data_to = user_sim.user_id
-              //  WHERE  user_sim.user_id = ".$parameter." ";
         $sql = "SELECT * from data where DATA_ID = $parameter";
         $query = $this->db->query($sql);
         return $query;

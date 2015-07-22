@@ -68,7 +68,6 @@
                             </li>
                             <?php
                             //var_dump($dataagenda);
-
                               if (!empty($dataagenda)) {
                                 foreach($dataagenda as $row ) {
                             ?>

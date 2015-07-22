@@ -45,6 +45,7 @@
                                                 <th>Dibuat</th>
                                                 <th>Info</th>
                                                 <th>Status</th>
+                                                <th>Pembina</th>
                                                 <th>Opsi</th>
                                             </tr>
                                         </thead>
@@ -75,6 +76,9 @@
                                                 <?php echo $row['STATUS'] ?>
                                               </td>
                                               <td>
+                                                <?php echo $row['PEMBINA'] ?>
+                                              </td>
+                                              <td>
                                                 <?php echo $row['OPSI'] ?>
                                               </td>
                                             </tr>
@@ -84,14 +88,15 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>No</th>
-                                                <th>ID</th>
-                                                <th>Nama</th>
-                                                <th>Kontak</th>
-                                                <th>Dibuat</th>
-                                                <th>Info</th>
-                                                <th>Status</th>
-                                                <th>Opsi</th>
+                                              <th>No</th>
+                                              <th>ID</th>
+                                              <th>Nama</th>
+                                              <th>Kontak</th>
+                                              <th>Dibuat</th>
+                                              <th>Info</th>
+                                              <th>Status</th>
+                                              <th>Pembina</th>
+                                              <th>Opsi</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -126,22 +131,22 @@
                                       <div class="form-group">
 
                                           <div class="input-group">
-                                              <span class="input-group-addon">Nama UKM:</span>
+                                              <span class="input-group-addon">Nama UKM :</span>
                                               <input type="text" class="form-control" id="tambah-nama" name="tambah-nama" placeholder="Nama UKM min. 3 Karakter" />
                                           </div><!-- /.input group -->
                                       </div>
                                       <div class="form-group">
 
                                           <div class="input-group">
-                                              <span class="input-group-addon">Kontak:</span>
+                                              <span class="input-group-addon">Kontak :</span>
                                               <input type="text" class="form-control" id="tambah-kontak" name="tambah-kontak" placeholder="Kontak untuk dihubungi" />
                                           </div><!-- /.input group -->
                                       </div>
                                       <div class="form-group">
 
                                           <div class="input-group">
-                                              <span class="input-group-addon">User:</span>
-                                              <select class="form-control" id="tambah-user" name="tambah-user">
+                                              <span class="input-group-addon">User :</span>
+                                              <select class="form-control" id="tambah-pembina" name="tambah-pembina">
                                                       <option value="0">Tidak Ada</option>
                                                   <?php
                                                   if(!empty($listuser)) {
@@ -157,7 +162,26 @@
 
                                           </div><!-- /.input group -->
                                       </div>
+                                      <div class="form-group">
 
+                                          <div class="input-group">
+                                              <span class="input-group-addon">Nama Pembina :</span>
+                                              <select class="form-control" id="tambah-user" name="tambah-pembina">
+                                                  <option value="Tidak Ada">Tidak Ada</option>
+                                                  <?php
+                                                  if(!empty($listpegawai)) {
+                                                    foreach ($listpegawai as $key )
+                                                    {
+                                                  ?>
+                                                      <option value="<?php echo $key->NAMA;?>"><?php echo $key->NAMA;?></option>
+                                                  <?php
+                                                    }
+                                                  }
+                                                  ?>
+                                              </select>
+
+                                          </div><!-- /.input group -->
+                                      </div>
                                   </div>
 
                               </div>
@@ -229,14 +253,14 @@
                                     <div class="form-group">
 
                                       <div class="input-group">
-                                        <span class="input-group-addon">Nama UKM:</span>
+                                        <span class="input-group-addon">Nama UKM    :</span>
                                         <input type="text" class="form-control" id="edit-nama" name="edit-nama" placeholder="Nama UKM min. 3 Karakter" />
                                       </div><!-- /.input group -->
                                     </div>
                                     <div class="form-group">
 
                                       <div class="input-group">
-                                        <span class="input-group-addon">Kontak:</span>
+                                        <span class="input-group-addon">Kontak    :</span>
                                         <input type="email" class="form-control" id="edit-kontak" name="edit-kontak" placeholder="Kontak untuk dihubungi" />
                                       </div><!-- /.input group -->
                                     </div>
@@ -244,7 +268,7 @@
                                     <div class="form-group">
 
                                       <div class="input-group">
-                                        <span class="input-group-addon">User:</span>
+                                        <span class="input-group-addon">User    :</span>
                                         <select class="form-control" id="edit-user" name="edit-user">
                                                   <?php
                                                   if(!empty($listuser)) {
@@ -259,8 +283,27 @@
 
                                         </div><!-- /.input group -->
                                       </div>
+                                      <div class="form-group">
+
+                                          <div class="input-group">
+                                              <span class="input-group-addon">Nama Pembina  :</span>
+                                              <select class="form-control" id="edit-pembina" name="edit-pembina">
+                                                  <?php
+                                                  if(!empty($listpegawai)) {
+                                                    foreach ($listpegawai as $keys )
+                                                    {
+                                                  ?>
+                                                      <option value="<?php echo $keys->NAMA;?>"><?php echo $keys->NAMA;?></option>
+                                                  <?php
+                                                    }
+                                                  }
+                                                  ?>
+                                              </select>
+
+                                          </div><!-- /.input group -->
+                                      </div>
                                         <div class="form-group">
-                                          <label>Tanggal Dibuat :</label>
+                                          <label>Tanggal Dibuat   :</label>
                                           <div class="input-group">
                                             <div class="input-group-addon">
                                               <i class="fa fa-sort-numeric-asc"></i>
@@ -454,9 +497,11 @@
                                 $('#form-pesan-tambah').html(pesan_err(obj.pesan));
                                 setTimeout(function(){$('#form-pesan-tambah').html('')}, 5000);
                             }
-
                             $('#btn-simpan').removeClass('disabled');
                         }
+
+
+
                     });
                     return false;
                 });

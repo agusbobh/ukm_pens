@@ -8,7 +8,7 @@
             <small>Profil user pada SIM UKM</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="<?php echo site_url();?>/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Profil</li>
         </ol>
     </section>
@@ -36,7 +36,7 @@
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="callout callout-info">
-                            <h4>Username</h4>
+                            <h4>Username UKM</h4>
                             <p>
                             <?php
                               if (!empty($datauser)) {
@@ -48,12 +48,36 @@
                             </p>
                         </div>
                         <div class="callout callout-info">
-                            <h4>Email</h4>
+                            <h4>Email UKM</h4>
                             <p>
                             <?php
                               if (!empty($datauser)) {
                                 foreach($datauser as $row) {
                                   echo $row->USER_MAIL;
+                                }
+                              }
+                              ?>
+                            </p>
+                        </div>
+                        <div class="callout callout-info">
+                            <h4>Nama UKM</h4>
+                            <p>
+                            <?php
+                              if (!empty($datauser)) {
+                                foreach($datauser as $row) {
+                                  echo $row->UKM;
+                                }
+                              }
+                              ?>
+                            </p>
+                        </div>
+                        <div class="callout callout-info">
+                            <h4>Pembina UKM</h4>
+                            <p>
+                            <?php
+                              if (!empty($datauser)) {
+                                foreach($datauser as $row) {
+                                  echo $row->PEMBINA;
                                 }
                               }
                               ?>
@@ -66,18 +90,6 @@
                               if (!empty($datauser)) {
                                 foreach($datauser as $row) {
                                   echo $row->USER_CREATED;
-                                }
-                              }
-                              ?>
-                            </p>
-                        </div>
-                        <div class="callout callout-info">
-                            <h4>UKM</h4>
-                            <p>
-                            <?php
-                              if (!empty($datauser)) {
-                                foreach($datauser as $row) {
-                                  echo $row->UKM;
                                 }
                               }
                               ?>

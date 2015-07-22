@@ -196,7 +196,7 @@ class User_model extends Model {
         return $query;
         */
 
-        $sql = "SELECT user_sim.*, role.role_name AS Role, ukm.ukm_name AS UKM FROM user_sim
+        $sql = "SELECT user_sim.*, role.role_name AS Role, ukm.ukm_name AS UKM, ukm.ukm_pembina AS Pembina FROM user_sim
                 JOIN role ON user_sim.user_role = role.role_id
                 LEFT JOIN ukm ON user_sim.ukm_id = ukm.ukm_id
                 WHERE  user_sim.user_id = ".$parameter." ";
@@ -207,7 +207,14 @@ class User_model extends Model {
     function get_list_user($parameter) {
         $sql = "SELECT user_sim.*, role.role_name AS Role FROM user_sim
                 JOIN role ON user_sim.user_role = role.role_id
-                WHERE  user_sim.user_role = ".$parameter." ";
+                WHERE  user_sim.user_role = ".$parameter." ORDER BY user_name ASC ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function get_list_pegawai() {
+        $sql = "SELECT nip, nama FROM pegawai
+                WHERE staff = 4 ORDER BY nama ASC";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -239,7 +246,7 @@ class User_model extends Model {
         FROM user_sim
         INNER JOIN role ON user_sim.user_role = role.role_id
         INNER JOIN ukm ON user_sim.ukm_id = ukm.ukm_id
-        ORDER BY user_sim.user_created ";
+        ORDER BY user_sim.user_created ASC";
 
         $query = $this->db->query($sql);
         return $query;

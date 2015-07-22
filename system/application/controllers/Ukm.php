@@ -14,20 +14,41 @@ class Ukm extends MY_Controller {
 
     }
 
+    function search()
+  	{
+  		// tangkap variabel keyword dari URL
+  		$keyword = $this->uri->segment(3);
+
+  		// cari di database
+  		$d = $this->ukm_model->search($keyword);
+      $data = $d->_fetch_object();
+  		// format keluaran di dalam array
+      $arr = array();
+  		foreach($data as $row)
+  		{
+  			$arr['query'] = $keyword;
+  			$arr['suggestions'][] = array(
+  				'pembina'	=>$row->pembina
+  			);
+  		}
+  		echo json_encode($data);
+  	}
+
     function tambahukm(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('tambah-kontak', 'Kontak','trim|required|strip_tags');
-        $this->form_validation->set_rules('tambah-user', 'User','trim|strip_tags');
+        $this->form_validation->set_rules('tambah-user', 'User','trim|reqired|strip_tags');
         $this->form_validation->set_rules('tambah-nama', 'Nama UKM','trim|required|strip_tags|min_length[3]|callback_cek_uname');
+        $this->form_validation->set_rules('tambah-pembina', 'Nama Pembina','trim|reqired|strip_tags');
 
         $user_id    = addslashes($this->input->post('tambah-user', TRUE));
         $ukm_name   = addslashes($this->input->post('tambah-nama', TRUE));
         $ukm_info  = 'Kosong';
         $ukm_kontak  = addslashes($this->input->post('tambah-kontak', TRUE));
-
+        $ukm_pembina = addslashes($this->input->post('tambah-pembina', TRUE));
 
         if($this->form_validation->run() == TRUE){
-            $this->ukm_model->insert($user_id, $ukm_name, $ukm_kontak);
+            $this->ukm_model->insert($user_id, $ukm_name, $ukm_kontak, $ukm_pembina);
             $status['status'] = 1;
             $status['pesan'] = 'UKM baru berhasil dibuat';
         }else{
@@ -40,10 +61,11 @@ class Ukm extends MY_Controller {
 
     function editukm(){
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('edit-kontak', 'Kontak','required|strip_tags');
+        $this->form_validation->set_rules('edit-kontak', 'Kontak','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-nama', 'Nama UKM','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-user', 'User','trim|required|strip_tags');
-        $this->form_validation->set_rules('edit-id', 'UKM ID','required|strip_tags');
+        $this->form_validation->set_rules('edit-id', 'UKM ID','trim|required|strip_tags');
+        $this->form_validation->set_rules('edit-pembina', 'Nama Pembina','trim|required|strip_tags');
 
         if($this->form_validation->run() == TRUE){
 
@@ -52,20 +74,21 @@ class Ukm extends MY_Controller {
           $nama = addslashes($this->input->post('edit-nama', TRUE));
           $kontak = addslashes($this->input->post('edit-kontak', TRUE));
           $tempnama = addslashes($this->input->post('edit-tempnama', TRUE));
+          $pembina = addslashes($this->input->post('edit-pembina', TRUE));
 
-          if($nama != $tempnama) {
-              $this->form_validation->set_rules('edit-nama', 'Nama UKM','callback_cek_uname');
-              if ($this->form_validation->run() == FALSE) {
-                  $status['status'] = 0;
-                  $status['pesan'] = validation_errors();
-              } else {
-                  $this->ukm_model->update($idukm, $nama, $iduser, $kontak);
-
-                  $status['status'] = 1;
-                  $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
-              }
-          } else {
-              $this->ukm_model->update($idukm, $iduser, $kontak);
+          // if($nama != $tempnama) {
+          //     $this->form_validation->set_rules('edit-nama', 'Nama UKM','callback_cek_uname');
+          //     if ($this->form_validation->run() == FALSE) {
+          //         $status['status'] = 0;
+          //         $status['pesan'] = validation_errors();
+          //     } else {
+          //         $this->ukm_model->update($idukm, $nama, $iduser, $kontak, $pembina);
+          //
+          //         $status['status'] = 1;
+          //         $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
+          //     }
+          // } else {
+              $this->ukm_model->update($idukm, $iduser, $kontak, $pembina);
 
               $status['status'] = 1;
               $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";

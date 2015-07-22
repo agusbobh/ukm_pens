@@ -61,6 +61,9 @@
         <script src="<?php echo base_url();?>system/public/assets/js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>system/public/assets/js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
 
+        <!-- autocomplete -->
+        <script src="<?php echo base_url();?>system/public/assets/js/plugins/autocomplete/jquery.autocomplete.js" type="text/javascript"></script>
+
         <!-- ukm App -->
         <script src="<?php echo base_url();?>system/public/assets/js/ukm/app.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>system/public/assets/js/ukm/misc.js" type="text/javascript"></script>

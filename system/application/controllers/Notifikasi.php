@@ -27,7 +27,7 @@ class Notifikasi extends MY_Controller {
             if($id == 42 OR $id == 41) {
                 // $this->log_model->insert($log_id, $log_teks);
                 $this->notif_model->updateall(2, $notif_to);
-                
+
                 $status['status'] = 1;
                 $status['pesan'] = 'Semua notifikasi berhasil dihapus';
             } else {

@@ -145,20 +145,33 @@ class Data extends MY_Controller {
             if($opfile == "hapusfile") {
                 // $data = $this->data_model->get_data(array("data_id" => $id))->row();
                 $data = $this->data_model->get_data($id);
-                $dpath = $path . $data->DATA_FILE_LAPORAN;
+                $d = '';
+                foreach($data as $temp){
+                  //echo $temp->DATA_FILE_LAPORAN;
+                  $d = $temp->DATA_FILE_LAPORAN;
+                  // echo $d;
+                }
+                $a = $data->_fetch_object();
+
+                foreach ($a as $temp) {
+                  //$b = $temp['DATA_FILE_LAPORAN'];
+                  $b = $temp->DATA_FILE_LAPORAN;
+                  //echo "fff";
+                }
+
+                $dpath = $_SERVER['DOCUMENT_ROOT'].'/ukm/uploads/'. $b ;
                 $this->deleteFiles($dpath);
-                $this->data_model->delete($id);
                 $pesan = 'Data ' . addslashes($this->input->post('hapus-nama', TRUE)) . ' beserta filenya ';
             } else {
                 $pesan = 'Data ' . addslashes($this->input->post('hapus-nama', TRUE)) . ' ';
-                $this->data_model->update($id,array("data_status" => "2"));
+                $this->data_model->update_status_file($id);
             }
 
             $datalog = array(
                 'log_text' => "User " . $this->access->get_username() . " menghapus " . $pesan,
                 'user_id' => $this->access->get_userid()
             );
-            $this->log_model->insert($datalog);
+            //$this->log_model->insert($datalog);
 
             $status['status'] = 1;
             $status['pesan'] = $pesan . 'berhasil dihapus';
@@ -181,22 +194,21 @@ class Data extends MY_Controller {
 
             if($id == 40) {
                 if($opfile == "hapusfile") {
-                    // $data = $this->data_model->get_data(array("data_id" => $id))->row();
-                    $data = $this->data_model->get_data($id);
-                    $dpath = $path . "*";
-                    $this->deleteFiles($dpath);
-                    $this->data_model->deleteall();
-                    $pesan = 'Semua data laporan beserta filenya';
+
+                  $data = $this->data_model->get_data($id);
+                  $dpath = $_SERVER['DOCUMENT_ROOT'].'/ukm/uploads/';
+                  $this->deleteFiles($dpath);
+                  $pesan = 'Semua data laporan beserta filenya';
                 } else {
                     $pesan = 'Semua data laporan ';
-                    $this->data_model->updateall(array("data_status" => "2"));
+                    $this->data_model->update_status_allfile();
                 }
 
                 $datalog = array(
                     'log_text' => "User " . $this->access->get_username() . " menghapus " . $pesan,
                     'user_id' => $this->access->get_userid()
                 );
-                $this->log_model->insert($datalog);
+                //$this->log_model->insert($datalog);
 
                 $status['status'] = 1;
                 $status['pesan'] = $pesan . 'berhasil dihapus';
@@ -226,7 +238,7 @@ class Data extends MY_Controller {
                 'log_text' => "User " . $this->access->get_username() . " mengembalikan data " . $nama,
                 'user_id' => $this->access->get_userid()
             );
-            $this->log_model->insert($datalog);
+            //$this->log_model->insert($datalog);
 
             $status['status'] = 1;
             $status['pesan'] = 'Data ' . $nama . ' berhasil dikembalikan';

@@ -114,13 +114,11 @@ class Dashboard extends MY_Controller {
         $counter = $a;
         $i = 0;
         $record = array();
-        //var_dump($query);
-        //die();
         foreach ($a as $temp) {
             $shap = $temp->STATUS != 2 ? "" : "disabled";
             $sund = $temp->STATUS == 2 ? "" : "disabled";
             $tambahan = "";
-            if($this->access->get_ukmid() != 0) {
+            if($this->access->get_roleid() != 40) {
                 $tambahan = '<button class="btn btn-xs btn-flat btn-info '. $shap .'" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\', \''.addslashes($temp->PESAN).'\')"><i class="fa fa-pencil"></i> Edit</button>';
             }
 
@@ -133,9 +131,13 @@ class Dashboard extends MY_Controller {
             $record[$i]['NAMA'] = $temp->NAMA;
             $record[$i]['STATUS'] = $temp->STATUS;
             if($this->access->get_roleid() != 41) {
+                if($this->access->get_roleid() == 42){
                 $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
-                        <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-undo"></i> Undo</button>
                         '. $tambahan .'';
+                }else{
+                  $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
+                          <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-undo"></i> Restore Dokumen</button>';
+                }
             } else {
                 $url = site_url() . "/data/download/" . $temp->ID;
                 $record[$i]['OPSI'] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
@@ -149,6 +151,7 @@ class Dashboard extends MY_Controller {
             //$output['aaData'][] = $record;
             $i++;
         }
+
         // var_dump($record);
         // die();
         // format it to JSON, this output will be displayed in datatable
@@ -253,6 +256,7 @@ class Dashboard extends MY_Controller {
             $record[$i]['DIBUAT'] = $temp->DIBUAT;
             $record[$i]['INFO'] = $temp->INFO;
             $record[$i]['STATUS'] = $temp->STATUS;
+            $record[$i]['PEMBINA'] = $temp->PEMBINA;
             $record[$i]['OPSI'] = '<div class="btn-group">
                             <button type="button" class="btn btn-info btn-xs btn-flat" data-toggle="dropdown">Opsi
                                 <span class="fa fa-caret-down"></span>
@@ -281,6 +285,9 @@ class Dashboard extends MY_Controller {
 
         $c = $this->user_model->get_list_user('42');
         $data['listuser'] = $c->_fetch_object();
+
+        $d = $this->user_model->get_list_pegawai();
+        $data['listpegawai'] = $d->_fetch_object();
 
         $data['record_ukm'] = $this->getukm();
 
