@@ -205,9 +205,9 @@ class Dashboard extends MY_Controller {
                                 <span class="fa fa-caret-down"></span>
                             </button>
                             <ul class="dropdown-menu pull-right" role="menu">
-                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->USERNAME).'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->ROLE).'\', \''.addslashes($temp->DIBUAT).'\', \''.addslashes($temp->MAIL).'\')" >Edit</a></li>
-                                <li><a href="#" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->USERNAME).'\', \''.addslashes($temp->ROLE).'\')" >Hapus</a></li>
-                                <li><a href="#" onclick="modalpass(\''.$temp->ID.'\', \''.addslashes($temp->USERNAME).'\')" >Password</a></li>
+                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes(trim($temp->USERNAME)).'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->ROLE).'\', \''.addslashes($temp->DIBUAT).'\', \''.addslashes($temp->MAIL).'\');return false;" >Edit</a></li>
+                                <li><a href="#" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes(trim($temp->USERNAME)).'\', \''.addslashes($temp->ROLE).'\');return false;" >Hapus</a></li>
+                                <li><a href="#" onclick="modalpass(\''.$temp->ID.'\', \''.addslashes(trim($temp->USERNAME)).'\');return false;" >Password</a></li>
                             </ul>
                         </div>';
             //$record[] = '<a onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Username).'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\', \''.addslashes($temp->Dibuat).'\')" class="btn btn-info btn-xs">Edit</a>
@@ -262,9 +262,9 @@ class Dashboard extends MY_Controller {
                                 <span class="fa fa-caret-down"></span>
                             </button>
                             <ul class="dropdown-menu pull-right" role="menu">
-                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->AKUN_USER).'\', \''.addslashes($temp->NAMA).'\', \''.addslashes($temp->KONTAK).'\', \''.addslashes($temp->DIBUAT).'\')" >Edit</a></li>
-                                <li><a href="#" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->NAMA).'\')" >Hapus</a></li>
-                                <li><a href="#" onclick="modalinfo(\''.$temp->ID.'\')" >Perbarui Info</a></li>
+                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->AKUN_USER).'\', \''.addslashes(trim($temp->NAMA)).'\', \''.addslashes($temp->KONTAK).'\', \''.addslashes($temp->DIBUAT).'\');return false;" >Edit</a></li>
+                                <li><a href="#" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes(trim($temp->NAMA)).'\');return false;" >Hapus</a></li>
+                                <li><a href="#" onclick="modalinfo(\''.$temp->ID.'\');return false;" >Perbarui Info</a></li>
                             </ul>
                         </div>';
             //$record[] = '<a onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Username).'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\', \''.addslashes($temp->Dibuat).'\')" class="btn btn-info btn-xs">Edit</a>
@@ -412,7 +412,7 @@ class Dashboard extends MY_Controller {
         $dat = $this->agenda_model->get_total($id);
         $data['boxagenda'] = $dat->_fetch_object();
 
-        $dat = $this->notif_model->get_total($id);
+        $dat = $this->notif_model->get_total_reminder();
         $data['boxrem'] = $dat->_fetch_object();
         echo json_encode($data);
     }

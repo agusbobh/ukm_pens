@@ -88,6 +88,13 @@ class Notif_model extends Model {
         }
     }
 
+    function get_total_reminder() {
+            $sql = "SELECT count(*) AS Total FROM notifikasi
+                    WHERE  notif_from = 21 AND notif_read != 2";
+            $query = $this->db->query($sql);
+            return $query;
+    }
+
     function get_daftartipe() {
         /*$this->db->select('*');
         $this->db->from('tipenotif');

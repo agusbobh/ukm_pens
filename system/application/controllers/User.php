@@ -17,7 +17,7 @@ class User extends MY_Controller {
     function tambahuser(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('tambah-email', 'Email','trim|required|strip_tags|valid_email');
-        $this->form_validation->set_rules('tambah-ukm', 'UKM','required|strip_tags');
+        $this->form_validation->set_rules('tambah-ukm', 'UKM','trim|required|strip_tags');
         $this->form_validation->set_rules('tambah-role', 'Role','required|strip_tags');
         $this->form_validation->set_rules('tambah-username', 'Username','trim|required|strip_tags|min_length[3]|callback_cek_uname');
         $this->form_validation->set_rules('tambah-pass', 'Password','trim|required|strip_tags|matches[tambah-passconf]|min_length[5]');
@@ -44,7 +44,7 @@ class User extends MY_Controller {
     function edituser(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('edit-email', 'Email','trim|required|strip_tags|valid_email');
-        $this->form_validation->set_rules('edit-ukm', 'UKM','required|strip_tags');
+        $this->form_validation->set_rules('edit-ukm', 'UKM','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-role', 'Role','required|strip_tags');
         $this->form_validation->set_rules('edit-username', 'Username','trim|required|strip_tags|min_length[3]');
         $this->form_validation->set_rules('edit-id', 'User ID','required|strip_tags');

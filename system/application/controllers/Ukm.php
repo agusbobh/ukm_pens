@@ -76,19 +76,19 @@ class Ukm extends MY_Controller {
           $tempnama = addslashes($this->input->post('edit-tempnama', TRUE));
           $pembina = addslashes($this->input->post('edit-pembina', TRUE));
 
-          // if($nama != $tempnama) {
-          //     $this->form_validation->set_rules('edit-nama', 'Nama UKM','callback_cek_uname');
-          //     if ($this->form_validation->run() == FALSE) {
-          //         $status['status'] = 0;
-          //         $status['pesan'] = validation_errors();
-          //     } else {
-          //         $this->ukm_model->update($idukm, $nama, $iduser, $kontak, $pembina);
-          //
-          //         $status['status'] = 1;
-          //         $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
-          //     }
-          // } else {
-              $this->ukm_model->update($idukm, $iduser, $kontak, $pembina);
+          if($nama != $tempnama) {
+              $this->form_validation->set_rules('edit-nama', 'Nama UKM','callback_cek_uname');
+              if ($this->form_validation->run() == FALSE) {
+                  $status['status'] = 0;
+                  $status['pesan'] = validation_errors();
+              } else {
+                  $this->ukm_model->update($idukm, $nama, $iduser, $kontak, $pembina);
+
+                  $status['status'] = 1;
+                  $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
+              }
+          } else {
+              $this->ukm_model->update($idukm, $nama, $iduser, $kontak, $pembina);
 
               $status['status'] = 1;
               $status['pesan'] = "Perubahan pada UKM " . $tempnama . " berhasil disimpan";
