@@ -126,20 +126,6 @@
                                       <div class="form-group">
 
                                           <div class="input-group">
-                                              <span class="input-group-addon">Username:</span>
-                                              <input type="text" class="form-control" id="tambah-username" name="tambah-username" placeholder="Username min. 3 Karakter" />
-                                          </div><!-- /.input group -->
-                                      </div>
-                                      <div class="form-group">
-
-                                          <div class="input-group">
-                                              <span class="input-group-addon">Email:</span>
-                                              <input type="email" class="form-control" id="tambah-email" name="tambah-email" placeholder="Email" />
-                                          </div><!-- /.input group -->
-                                      </div>
-                                      <div class="form-group">
-
-                                          <div class="input-group">
                                               <span class="input-group-addon">Role:</span>
                                               <select class="form-control" id="tambah-role" name="tambah-role">
                                                   <?php
@@ -153,6 +139,32 @@
 
                                           </div><!-- /.input group -->
                                       </div>
+                                      <div class="form-group">
+
+                                          <div class="input-group">
+                                              <span class="input-group-addon">Username:</span>
+                                              <select class="form-control" id="tambah-username" name="tambah-username">
+                                                  <?php
+                                                  if(!empty($listnon)) {
+                                                    foreach ($listnon as $key )
+                                                    {
+                                                  ?>
+                                                      <option value="<?php echo $key->NAMA;?>"><?php echo $key->NAMA;?></option>
+                                                  <?php
+                                                    }
+                                                  }
+                                                  ?>
+                                              </select>
+                                          </div><!-- /.input group -->
+                                      </div>
+                                      <div class="form-group">
+
+                                          <div class="input-group">
+                                              <span class="input-group-addon">Email:</span>
+                                              <input type="email" class="form-control" id="tambah-email" name="tambah-email" placeholder="Email" />
+                                          </div><!-- /.input group -->
+                                      </div>
+
                                       <div class="form-group">
 
                                           <div class="input-group">

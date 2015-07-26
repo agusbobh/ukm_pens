@@ -164,6 +164,44 @@
       <?php } ?>
 
       <!-- Modal Hapus Laporan -->
+      <div class="modal fade" id="modal-fake" data-backdrop="static">
+          <div class="modal-dialog" style="width: 26%;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title"><i class="fa fa-book"></i> Hapus Laporan</h4>
+                  </div>
+                  <div class="modal-body">
+                      <div class="box-body table-responsive">
+                          <span id="form-pesan-fake">
+                          </span>
+                          <?php echo form_open('data/hapusdatafake', 'id="form-fake"') ?>
+                          <div class="box-body">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                          <input type="hidden" id="fake-id" name="fake-id" />
+                                          <input type="hidden" id="fake-nama" name="fake-nama" />
+                                          <p>Apakah Anda yakin ingin menghapus Data Laporan berikut ?</p>
+                                          <div class="callout callout-info">
+                                              <p>Nama UKM : <span id="fake-namaukm"> </span></p>
+                                              <p>Nama File : <span id="fake-namafile"> </span></p>
+                                          </div>
+                                  </div>
+                              </div>
+
+                          </div>
+                          <?php echo form_close(); ?>
+                      </div><!-- /.box-body -->
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                      <button id="btn-fake" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Iya, Hapus</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Modal Hapus Permanen Laporan -->
       <div class="modal fade" id="modal-hapus" data-backdrop="static">
           <div class="modal-dialog" style="width: 26%;">
               <div class="modal-content">
@@ -206,7 +244,7 @@
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
-                      <button id="btn-hapus" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Iya, Hapus</button>
+                      <button id="btn-hapus" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Iya, Hapus Permanen</button>
                   </div>
               </div>
           </div>
@@ -218,7 +256,7 @@
               <div class="modal-content">
                   <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <h4 class="modal-title"><i class="fa fa-book"></i> Undo Laporan</h4>
+                      <h4 class="modal-title"><i class="fa fa-book"></i> Kembalikan File Laporan</h4>
                   </div>
                   <div class="modal-body">
                       <div class="box-body table-responsive">
@@ -354,7 +392,54 @@
             </div>
         </div> <!-- /.modal-undo-->
 
+        <!-- Modal Tandai Laporan -->
+        <div class="modal fade" id="modal-tandai" data-backdrop="static">
+            <div class="modal-dialog" style="width: 26%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-book"></i> Baca Laporan</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body table-responsive">
+                            <span id="form-pesan-tandai">
+                            </span>
+                            <?php echo form_open('data/tandai', 'id="form-tandai"') ?>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                            <input type="hidden" id="tandai-id" name="tandai-id" />
+                                            <input type="hidden" id="tandai-nama" name="tandai-nama" />
+                                            <p>Apakah Anda yakin ingin menghapus Data Laporan berikut ?</p>
+                                            <div class="callout callout-info">
+                                                <p>Nama UKM : <span id="tandai-namaukm"> </span></p>
+                                                <p>Nama File : <span id="tandai-namafile"> </span></p>
+                                            </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <?php echo form_close(); ?>
+                        </div><!-- /.box-body -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                        <button id="btn-tandai" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Iya, Tandai</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript">
+            function modaltandai(id, ukm, file){
+                $('#form-pesan-tandai').html('');
+                $('#modal-tandai').modal('show');
+                $('#tandai-id').val(id);
+                $('#tandai-nama').val(file);
+                $('#tandai-namaukm').html(ukm);
+                $('#tandai-namafile').html(file);
+            }
+
             function modalhapus(id, ukm, file){
                 $('#form-pesan-hapus').html('');
                 $('#modal-hapus').modal('show');
@@ -362,6 +447,15 @@
                 $('#hapus-nama').val(file);
                 $('#hapus-namaukm').html(ukm);
                 $('#hapus-namafile').html(file);
+            }
+
+            function modalfake(id, ukm, file){
+                $('#form-pesan-fake').html('');
+                $('#modal-fake').modal('show');
+                $('#fake-id').val(id);
+                $('#fake-nama').val(file);
+                $('#fake-namaukm').html(ukm);
+                $('#fake-namafile').html(file);
             }
 
             function modalundo(id, ukm, file){
@@ -434,6 +528,38 @@
                     $('#btn-semua').focus();
                 });
 
+                $('#modal-tandai').on('shown.bs.modal', function (e) {
+                    $('#btn-tandai').focus();
+                });
+
+                // tandai laporan
+                $('#btn-tandai').click(function(){
+                    $('#form-tandai').submit();
+                    $('#btn-tandai').addClass('disabled');
+                });
+                $('#form-tandai').submit(function(){
+                    $.ajax({
+                        url:"<?php echo site_url()?>/data/tandai",
+                        type:"POST",
+                        data:$('#form-tandai').serialize(),
+                        cache: false,
+                        success:function(respon){
+                            var obj = $.parseJSON(respon);
+                            if(obj.status==1){
+                                $('#form-pesan-tandai').html(pesan_succ(obj.pesan));
+                                setTimeout(function(){$('#form-pesan-tandai').html('')}, 2000);
+                                setTimeout(function(){$('#modal-tandau').modal('hide')}, 2500);
+                                setTimeout(function(){ location.reload(); }, 2500);
+                            }else{
+                                $('#form-pesan-bacasatu').html(pesan_err(obj.pesan));
+                                setTimeout(function(){$('#form-pesan-tandai').html('')}, 5000);
+                            }
+
+                            $('#btn-tandai').removeClass('disabled');
+                        }
+                    });
+                    return false;
+                });
 
                 // undo
                 $('#btn-undo').click(function(){
@@ -459,6 +585,35 @@
                                 setTimeout(function(){$('#form-pesan-undo').html('')}, 3000);
                             }
                             $('#btn-undo').removeClass('disabled');
+                        }
+                    });
+                    return false;
+                });
+
+                // Hapus fake data
+                $('#btn-fake').click(function(){
+                    $('#form-fake').submit();
+                    $('#btn-fake').addClass('disabled');
+                });
+                $('#form-fake').submit(function(){
+                    $.ajax({
+                        url:"<?php echo site_url();?>/data/hapusdatafake",
+                        type:"POST",
+                        data:$('#form-fake').serialize(),
+                        cache: false,
+                        success:function(respon){
+                            var obj = $.parseJSON(respon);
+                            if(obj.status==1){
+                                $('#form-pesan-fake').html(pesan_succ(obj.pesan));
+                                setTimeout(function(){$('#form-pesan-fake').html('')}, 2000);
+                                setTimeout(function(){$('#modal-fake').modal('hide')}, 2500);
+                                setTimeout(function(){location.reload()}, 2500);
+                            }else{
+                                $('#form-pesan-hapus').html(pesan_err(obj.pesan));
+                                setTimeout(function(){$('#form-pesan-fake').html('')}, 5000);
+                            }
+
+                            $('#btn-fake').removeClass('disabled');
                         }
                     });
                     return false;

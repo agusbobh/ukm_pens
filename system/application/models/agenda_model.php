@@ -10,26 +10,11 @@ class Agenda_model extends Model {
 
     function get_total($parameter) {
         if(!empty($parameter)){
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('agenda');
-            // $this->db->where($parameter);
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM agenda
                     WHERE  ukm_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('agenda');
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM agenda";
             $query = $this->db->query($sql);
             return $query;
@@ -52,33 +37,18 @@ class Agenda_model extends Model {
     }
 
     function delete($id) {
-        // $this->db->where('agenda_id', $id);
-        // $this->db->delete('agenda');
         $sql = "UPDATE agenda SET agenda_status = '2' WHERE agenda_id = '".$id."' ";
         $query = $this->db->query($sql);
         return $query;
     }
 
     function update($idagenda, $judul, $timefrom, $timeto, $idstatus, $teks) {
-        // $this->db->where('agenda_id', $id);
-        // $this->db->update('agenda', $data);
         $sql = "UPDATE agenda SET agenda_title = '".$judul."', agenda_time = '".$timefrom."', agenda_timeto = '".$timeto."', agenda_status = '".$idstatus."', agenda_text = '".$teks."'  WHERE agenda_id = '".$idagenda."' ";
         $query = $this->db->query($sql);
         return $query;
     }
 
     function get_agenda($id) {
-        /*$this->db->select('agenda.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks');
-        $this->db->from('agenda');
-        $this->db->join('tipenotif', 'agenda.agenda_status = tipenotif.tipe_id');
-        $this->db->where($parameter);
-        $this->db->limit($limit);
-        $query = $this->db->get();
-
-        return $query;
-        */
-        // return ( $query->num_rows > 0 ? $query : 0 );
-
         $sql = "SELECT agenda.*, tipenotif.tipe_nama AS tipe_nama, tipenotif.tipe_teks AS teks
                 FROM agenda JOIN tipenotif ON agenda.agenda_status = tipenotif.tipe_id
                 WHERE ukm_id = '".$id."' ";
@@ -94,20 +64,7 @@ class Agenda_model extends Model {
     }
 
     function view_agenda(){
-      /*
-      $result = array();
-      $this->db->select('*');
-      $this->db->from('agenda');
-      $this->db->join('ukm','ukm.ukm_id = agenda.ukm_id');
-      $this->db->order_by('agenda_time','desc');
-      $query =$this->db->get();
-      if($query->num_rows > 0){
-        $result = $query->result();
-      }
-      return $result;
-      */
       $sql    = "select * from agenda join ukm on ukm.ukm_id = agenda.ukm_id where agenda_status != 0 order by agenda_time desc";         //ganti sql sesuai database
-
       $query = $this->db->query($sql);
       return $query;
     }

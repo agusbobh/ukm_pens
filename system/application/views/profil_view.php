@@ -41,19 +41,7 @@
                             <?php
                               if (!empty($datauser)) {
                                 foreach($datauser as $row) {
-                                  echo $row->USER_NAME;
-                                }
-                              }
-                              ?>
-                            </p>
-                        </div>
-                        <div class="callout callout-info">
-                            <h4>Email UKM</h4>
-                            <p>
-                            <?php
-                              if (!empty($datauser)) {
-                                foreach($datauser as $row) {
-                                  echo $row->USER_MAIL;
+                                  echo $row->USERNAME;
                                 }
                               }
                               ?>
@@ -150,13 +138,13 @@
 
                           <div class="input-group">
                             <span class="input-group-addon">Username:</span>
-                            <input type="text" class="form-control" id="edit-username" name="edit-username" value="<?php foreach($datauser as $row) { echo $row->USER_NAME; }                                 ?>" placeholder="Username min. 3 Karakter" />
+                            <input type="text" class="form-control" id="edit-username" name="edit-username" value="<?php foreach($datauser as $row) { echo $row->USERNAME; }                                 ?>" placeholder="Username min. 3 Karakter" />
                           </div><!-- /.input group -->
                         </div>
                         <div class="form-group">
                           <div class="input-group">
                             <span class="input-group-addon">Email:</span>
-                            <input type="email" class="form-control" id="edit-email" name="edit-email" value="<?php foreach($datauser as $row) { echo $row->USER_MAIL; }?>" placeholder="Email" />
+                            <input type="email" class="form-control" id="edit-email" name="edit-email" value="<?php foreach($datauser as $row) { echo $row->EMAIL; }?>" placeholder="Email" />
                           </div><!-- /.input group -->
                         </div>
                         <div class="form-group">
@@ -183,7 +171,7 @@
                             </div>
                             <input type="hidden" id="edit-id" name="edit-id" value="<?php foreach($datauser as $row) { echo $row->USER_ID; }?>" readonly="" />
                             <input type="text" class="form-control" id="edit-tempuname" name="edit-tempuname" value="<?php foreach($datauser as $row) { echo $row->USER_CREATED; }?>" readonly="" />
-                            <input type="text" class="form-control" id="edit-tempuname" name="edit-tempuname" value="Oleh -> <?php foreach($datauser as $row) { echo $row->USER_NAME; }?>" readonly="" />
+                            <input type="text" class="form-control" id="edit-tempuname" name="edit-tempuname" value="Oleh -> <?php foreach($datauser as $row) { echo $row->USERNAME; }?>" readonly="" />
                           </div><!-- /.input group -->
 
                         </div>
@@ -222,7 +210,7 @@
                           <div class="form-group">
                               <div class="input-group">
                                   <span class="input-group-addon">Username:</span>
-                                  <input type="text" id="pass-name" name="pass-name" value="<?php foreach($datauser as $row) { echo $row->USER_NAME; }?>" readonly="" class="form-control" />
+                                  <input type="text" id="pass-name" name="pass-name" value="<?php foreach($datauser as $row) { echo $row->USERNAME; }?>" readonly="" class="form-control" />
                               </div><!-- /.input group -->
                           </div>
                           <div class="form-group">

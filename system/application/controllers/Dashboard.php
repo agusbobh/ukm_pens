@@ -107,7 +107,15 @@ class Dashboard extends MY_Controller {
 
         // run query to get user listing
         $idu = $this->access->get_ukmid();
-        $query = $this->data_model->get_daftardata($idu);
+        $idr = $this->access->get_roleid();
+        if($idr == 40) {
+            $query = $this->data_model->get_daftardata($idu, "data.data_status = 2");
+        } else if($idr == 41) {
+            $query = $this->data_model->get_daftardata($idu, "data.data_status != 2");
+        } else if($idr == 42) {
+            $query = $this->data_model->get_daftardata($idu, "data.data_status = 0");
+        }
+
         $a= $query->_fetch_object();
         // get result after running query and put it in array
         //$i = $start;
@@ -116,7 +124,7 @@ class Dashboard extends MY_Controller {
         $record = array();
         foreach ($a as $temp) {
             $shap = $temp->STATUS != 2 ? "" : "disabled";
-            $sund = $temp->STATUS == 2 ? "" : "disabled";
+            $sund = $temp->STATUS != 2 ? "" : "disabled";
             $tambahan = "";
             if($this->access->get_roleid() != 40) {
                 $tambahan = '<button class="btn btn-xs btn-flat btn-info '. $shap .'" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\', \''.addslashes($temp->PESAN).'\')"><i class="fa fa-pencil"></i> Edit</button>';
@@ -132,16 +140,19 @@ class Dashboard extends MY_Controller {
             $record[$i]['STATUS'] = $temp->STATUS;
             if($this->access->get_roleid() != 41) {
                 if($this->access->get_roleid() == 42){
-                $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
+                $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalfake(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
                         '. $tambahan .'';
                 }else{
-                  $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus</button>
+                  $record[$i]['OPSI'] = '<button class="btn btn-xs btn-flat btn-danger '. $shap .'" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-times"></i> Hapus Permanen</button>
                           <button class="btn btn-xs btn-flat btn-warning '. $sund .'" onclick="modalundo(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\')"><i class="fa fa-undo"></i> Restore Dokumen</button>';
                 }
             } else {
-                $url = site_url() . "/data/download/" . $temp->ID;
+                $url = site_url() . "/data/ /" . $temp->ID;
                 $record[$i]['OPSI'] = '<a class="btn btn-xs btn-flat btn-success" target="_blank" href="'. $url .'">
                                 <i class="fa fa-download"></i> Download
+                            </a>
+                            <a class="btn btn-xs btn-flat btn-info" onclick="modaltandai(\''.$temp->ID.'\', \''.addslashes($temp->UKM).'\', \''.addslashes($temp->FILES).'\');return false;" href="#" >
+                                <i class="fa fa-eye"></i> Tandai
                             </a>';
             }
             //$record[] = '<a onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->Username).'\', \''.addslashes($temp->Nama).'\', \''.addslashes($temp->Role).'\', \''.addslashes($temp->Dibuat).'\')" class="btn btn-info btn-xs">Edit</a>
@@ -231,6 +242,9 @@ class Dashboard extends MY_Controller {
         $c = $this->ukm_model->get_ukm();
         $data['dataukm'] = $c->_fetch_object();
 
+        $d = $this->user_model->get_list_non_dosen();
+        $data['listnon'] = $d->_fetch_object();
+
         $data['record_user'] = $this->getuser();
         // generate view
         $this->load->view('header_view',$datah);
@@ -262,7 +276,7 @@ class Dashboard extends MY_Controller {
                                 <span class="fa fa-caret-down"></span>
                             </button>
                             <ul class="dropdown-menu pull-right" role="menu">
-                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes($temp->AKUN_USER).'\', \''.addslashes(trim($temp->NAMA)).'\', \''.addslashes($temp->KONTAK).'\', \''.addslashes($temp->DIBUAT).'\');return false;" >Edit</a></li>
+                                <li><a href="#" onclick="modaledit(\''.$temp->ID.'\', \''.addslashes(trim($temp->NAMA)).'\', \''.addslashes($temp->KONTAK).'\', \''.addslashes(trim($temp->PEMBINA)).'\', \''.addslashes($temp->DIBUAT).'\');return false;" >Edit</a></li>
                                 <li><a href="#" onclick="modalhapus(\''.$temp->ID.'\', \''.addslashes(trim($temp->NAMA)).'\');return false;" >Hapus</a></li>
                                 <li><a href="#" onclick="modalinfo(\''.$temp->ID.'\');return false;" >Perbarui Info</a></li>
                             </ul>

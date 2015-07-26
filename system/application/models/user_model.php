@@ -9,34 +9,14 @@ class User_model extends Model {
     }
 
     function get_login_info($username) {
-        $sql = "SELECT user_sim.user_id, user_sim.user_name, user_sim.user_pass, user_sim.user_role, user_sim.user_mail, user_sim.ukm_id, role.role_name AS rolename, ukm.ukm_name AS ukm_name
+        $sql = "SELECT user_sim.user_id, user_sim.nomor, pegawai.username, pegawai.password, pegawai.email, user_sim.ukm_id, role.role_id AS user_role, role.role_name AS rolename, ukm.ukm_name AS ukm_name
             FROM user_sim
             INNER JOIN role ON user_sim.user_role = role.role_id
             INNER JOIN ukm ON ukm.ukm_id = ukm.ukm_id
-            WHERE user_sim.user_name = '" .$username. "' ";
-
-
-        /*
-        $query = $this->db->query('SELECT
-            user_sim.user_id, user_sim.user_name, user_sim.user_pass, user_sim.user_role, user_sim.user_mail, user_sim.ukm_id, role.role_name AS rolename
-            FROM user_sim
-            INNER JOIN role ON user_sim.user_role = role.role_id
-            WHERE user_sim.user_name = "' . $username . '"
-            ');
-
-        */
-
+            INNER JOIN pegawai ON user_sim.nomor = pegawai.nomor
+            WHERE pegawai.username = '" .$username. "' ";
         $query = $this->db->query($sql);
         return $query;
-        // if($query->num_rows() > 0){
-        //     return $query->row();
-        // }else{
-        //     return FALSE;
-        // }
-
-
-        //return ($query->num_rows() > 0) ? $query->row() : FALSE;
-        //return $query;
     }
 
     function get_menu($role) {
@@ -91,26 +71,11 @@ class User_model extends Model {
 
     function get_total($parameter) {
         if(!empty($parameter)){
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('user_sim');
-            // $this->db->where($parameter);
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM user_sim
                     WHERE  user_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('user_sim');
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM user_sim ";
             $query = $this->db->query($sql);
             return $query;
@@ -123,19 +88,12 @@ class User_model extends Model {
     }
 
     function cek($field, $value) {
-        /*$this->db->select('*');
-        $this->db->from('user_sim');
-        $this->db->where($parameter);
-        $query = $this->db->get();
-        return $query;
-        */
         $sql = "SELECT * FROM user_sim WHERE ".$field." = '".$value."' ";
         $query = $this->db->query($sql);
         return $query;
     }
 
     function insert($ukm_id, $user_name, $user_mail, $user_pass, $user_role) {
-        //$this->db->insert('user_sim', $data);
         $sql = "INSERT INTO user_sim (user_id, ukm_id, user_name, user_mail, user_pass, user_status, user_created, user_role)"
                 . "VALUES(USER_ID_SEQ.NEXTVAL,'".$ukm_id."', '".$user_name."', '".$user_mail."', '".$user_pass."', '1', SYSDATE, '".$user_role."')";
         $query = $this->db->query($sql);
@@ -143,10 +101,6 @@ class User_model extends Model {
     }
 
     function delete($id) {
-        /*
-        $this->db->where('user_id', $id);
-        $this->db->delete('user_sim');
-        */
         $sql = "DELETE FROM user_sim WHERE user_id = ".$id." ";
         $query = $this->db->query($sql);
         return $query;
@@ -155,26 +109,15 @@ class User_model extends Model {
     function reset($data) {
       $query = $this->db->query("SELECT * FROM user_sim WHERE .'$data'");
       return $query;
-      /*
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where($data);
-        $query = $this->db->get();
-        return $query;
-      */
     }
 
     function update($iduser, $username, $email, $idrole, $idukm ) {
-        // $this->db->where('user_id', $id);
-        // $this->db->update('user_sim', $data);
         $sql = "UPDATE user_sim SET user_name =  '".$username."', user_mail = '".$email."', user_role = '".$idrole."', ukm_id = '".$idukm."' WHERE user_id = '".$iduser."' ";
         $query = $this->db->query($sql);
         return $query;
     }
 
     function update_pass($iduser, $passbaru) {
-        // $this->db->where('user_id', $id);
-        // $this->db->update('user_sim', $data);
         $sql = "UPDATE user_sim SET user_pass = '".$passbaru."' WHERE user_id = '".$iduser."' ";
         $query = $this->db->query($sql);
         return $query;
@@ -187,17 +130,9 @@ class User_model extends Model {
     }
 
     function get_user($parameter) {
-        /*$this->db->select('user_sim.*, role.role_name AS Role, ukm.ukm_name AS UKM');
-        $this->db->from('user_sim');
-        $this->db->join('role', 'user_sim.user_role = role.role_id');
-        $this->db->join('ukm', 'user_sim.ukm_id = ukm.ukm_id');
-        $this->db->where($parameter);
-        $query = $this->db->get();
-        return $query;
-        */
-
-        $sql = "SELECT user_sim.*, role.role_name AS Role, ukm.ukm_name AS UKM, ukm.ukm_pembina AS Pembina FROM user_sim
+        $sql = "SELECT user_sim.*, pegawai.username AS username, pegawai.email AS email, role.role_name AS Role, ukm.ukm_name AS UKM, ukm.ukm_pembina AS Pembina FROM user_sim
                 JOIN role ON user_sim.user_role = role.role_id
+                JOIN pegawai ON user_sim.nomor = pegawai.nomor
                 LEFT JOIN ukm ON user_sim.ukm_id = ukm.ukm_id
                 WHERE  user_sim.user_id = ".$parameter." ";
         $query = $this->db->query($sql);
@@ -207,7 +142,8 @@ class User_model extends Model {
     function get_list_user($parameter) {
         $sql = "SELECT user_sim.*, role.role_name AS Role FROM user_sim
                 JOIN role ON user_sim.user_role = role.role_id
-                WHERE  user_sim.user_role = ".$parameter." ORDER BY user_name ASC ";
+                JOIN pegawai ON user_sim.user_id = pegawai.nomor
+                WHERE  user_sim.user_role = ".$parameter." ORDER BY username ASC ";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -219,14 +155,14 @@ class User_model extends Model {
         return $query;
     }
 
-    function get_userakses($parameter) {
-        /*$this->db->select('user_akses.*, role.role_name AS Role');
-        $this->db->from('user_akses');
-        $this->db->join('role', 'user_akses.role_id = role.role_id');
-        $this->db->where($parameter);
-        $query = $this->db->get();
+    function get_list_non_dosen() {
+        $sql = "SELECT nip, nama FROM pegawai
+                WHERE staff != 4 ORDER BY nama ASC";
+        $query = $this->db->query($sql);
         return $query;
-        */
+    }
+
+    function get_userakses($parameter) {
         $query = $this->db->query("SELECT user_akses.*, role.role_name AS Role FROM user_akses
                   JOIN role ON user_akses.role_id = role.role_id
                   WHERE role.role_id = '".$parameter."'  ");
@@ -237,15 +173,16 @@ class User_model extends Model {
 
         $sql = "SELECT
             user_sim.user_id AS ID,
-            user_sim.user_name AS Username,
+            pegawai.username AS Username,
             ukm.ukm_name AS UKM,
             user_sim.user_created AS Dibuat,
-            user_sim.user_mail AS Mail,
+            pegawai.email AS Mail,
             role.role_name AS Role,
             REPLACE(REPLACE(user_sim.user_status,'0', 'Nonaktif'),'1','Aktif') AS Status
         FROM user_sim
         INNER JOIN role ON user_sim.user_role = role.role_id
         INNER JOIN ukm ON user_sim.ukm_id = ukm.ukm_id
+        INNER JOIN pegawai ON user_sim.user_id = pegawai.nomor
         ORDER BY user_sim.user_created ASC";
 
         $query = $this->db->query($sql);

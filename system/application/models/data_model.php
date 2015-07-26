@@ -10,27 +10,11 @@ class Data_model extends Model {
 
     function get_total($parameter) {
         if(!empty($parameter)){
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('data');
-            // $this->db->where('ukm_id',$parameter);
-            // $query = $this->db->get();
-            // //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-
             $sql = "SELECT count(*) AS Total FROM data
                     WHERE  ukm_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('data');
-            // $query = $this->db->get();
-            // //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
             $sql = "SELECT count(*) AS Total FROM data ";
             $query = $this->db->query($sql);
             return $query;
@@ -38,7 +22,6 @@ class Data_model extends Model {
     }
 
     function insert($idukm, $data_laporan, $data_msg) {
-        // $this->db->insert('data', $data);
         $sql = "INSERT INTO data (DATA_ID, UKM_ID, DATA_FILE_LAPORAN, DATA_MSG, DATA_FROM, DATA_TO, DATA_TIME, DATA_STATUS)"
                 . "VALUES(DATA_ID_SEQ.NEXTVAL,'".$idukm."', '".$data_laporan."', '".$data_msg."', '".$idukm."' , '21', SYSDATE, '0')";
         $query = $this->db->query($sql);
@@ -50,14 +33,19 @@ class Data_model extends Model {
         $this->db->delete('data');
     }
 
-    function deleteall() {
-        $this->db->empty_table('data');
+    function tandai() {
+
     }
 
     function update($id, $data_file, $data_msg) {
-        // $this->db->where('data_id', $id);
-        // $this->db->update('data', $data);
         $sql = "UPDATE data SET DATA_FILE_LAPORAN = '".$data_file."', DATA_MSG = '".$data_msg."' "
+              ."WHERE DATA_ID = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function update_tandai_file($id) {
+        $sql = "UPDATE data SET DATA_STATUS ='1' "
               ."WHERE DATA_ID = '".$id."' ";
         $query = $this->db->query($sql);
         return $query;
@@ -90,37 +78,39 @@ class Data_model extends Model {
         return $query;
     }
 
-    function get_daftardata($idu) {
-
+    function get_daftardata($idu, $idr) {
         if($idu == 0) {
             $sql = "SELECT
                 data.data_id AS ID,
                 ukm.ukm_name AS UKM,
                 data.ukm_id AS UKMid,
-                user_sim.user_name AS Nama,
+                pegawai.nama AS Nama,
                 data.data_file_laporan AS Files,
                 data.data_msg AS Pesan,
                 data.data_to AS Tujuan,
                 data.data_time AS Dikirim,
                 REPLACE(REPLACE(REPLACE(data.data_status,'0','Belum Dibaca'),'1','Sudah Dibaca'),'2','Dihapus') AS Status
             FROM data
-            INNER JOIN ukm ON (data.ukm_id = ukm.ukm_id)
-            INNER JOIN user_sim ON (data.data_to = user_sim.user_id)
+            JOIN ukm ON (data.ukm_id = ukm.ukm_id)
+            JOIN user_sim ON (data.data_to = user_sim.user_id)
+            JOIN pegawai ON (user_sim.nomor = pegawai.nomor)
+            WHERE ".$idr." AND ".$idr."
             ORDER BY data.data_id";
         } else {
             $sql = "SELECT
                 data.data_id AS ID,
                 ukm.ukm_name AS UKM,
                 data.ukm_id AS UKMid,
-                user_sim.user_name AS Nama,
+                pegawai.nama AS Nama,
                 data.data_file_laporan AS Files,
                 data.data_msg AS Pesan,
                 data.data_to AS Tujuan,
                 data.data_time AS Dikirim,
                 REPLACE(REPLACE(REPLACE(data.data_status,'0','Belum Dibaca'),'1','Sudah Dibaca'),'2','Dihapus') AS Status
             FROM data
-            INNER JOIN ukm ON (data.ukm_id = ukm.ukm_id)
-            INNER JOIN user_sim ON (data.data_to = user_sim.user_id)
+            JOIN ukm ON (data.ukm_id = ukm.ukm_id)
+            JOIN user_sim ON (data.data_to = user_sim.user_id)
+            JOIN pegawai ON (user_sim.nomor = pegawai.nomor)
             WHERE data.ukm_id = ". $idu ."
             ORDER BY data.data_id";
         }

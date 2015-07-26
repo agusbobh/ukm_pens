@@ -38,11 +38,11 @@
             <!-- Collect the nav links for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Home</a>
+                    <li><a href="<?php echo site_url();?>">Home</a>
                     </li>
                     <li><a href="<?php echo site_url();?>/login">Login</a>
                     </li>
-                    <li><a href="#">About</a>
+                    <li><a href="<?php echo site_url();?>">About</a>
                     </li>
                     <li><a href="#">Services</a>
                     </li>

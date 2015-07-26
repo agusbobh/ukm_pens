@@ -63,7 +63,7 @@ class Ukm extends MY_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('edit-kontak', 'Kontak','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-nama', 'Nama UKM','trim|required|strip_tags');
-        $this->form_validation->set_rules('edit-user', 'User','trim|required|strip_tags');
+        $this->form_validation->set_rules('edit-user', 'User','trim|strip_tags');
         $this->form_validation->set_rules('edit-id', 'UKM ID','trim|required|strip_tags');
         $this->form_validation->set_rules('edit-pembina', 'Nama Pembina','trim|required|strip_tags');
 

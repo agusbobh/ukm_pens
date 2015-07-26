@@ -134,7 +134,7 @@ class User extends MY_Controller {
     }
 
     function cek_uname($str) {
-        $c_nama = $this->user_model->cek('USER_NAME',$str);
+        $c_nama = $this->user_model->cek('USERNAME',$str);
 
         if($c_nama->num_rows() > 0){
             $this->form_validation->set_message('cek_uname', 'Username sudah digunakan, silakan coba yang lain !!');

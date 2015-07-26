@@ -8,7 +8,7 @@
                         <small>Daftar Notifikasi yang diterima</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?php echo site_url();?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="<?php echo site_url();?>/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Notifikasi</li>
                     </ol>
                 </section>
@@ -43,8 +43,8 @@
                                           foreach ($datanotif as $key) {
                                         ?>
                                         <tr style="background:<?php echo $key->NOTIF_READ == 0 ? "#f5f5f5" : "none"; ?>">
-                                            <td><span class="label label-<?php echo $key->TIPE_NAMA;?>"><?php echo $key->TEKS ." / " . $key->NOTIF_TIME;?></span> <?php echo substr($key->NOTIF_ACTIVITY,0);?> { <i>dikirim oleh <?php echo $key->USER_NAME;?></i> }.</td>
-                                            <td><button class="btn btn-xs btn-flat <?php echo $key->NOTIF_READ == 0 ? "btn-primary" : "btn-default disabled"; ?>" onclick="modalbacasatu('<?php echo $key->NOTIF_ID?>', '<?php echo addslashes($key->NOTIF_TIME)?>', '<?php echo addslashes($key->USER_NAME)?>')"><i class="fa fa-check"></i> Baca</button></td>
+                                            <td><span class="label label-<?php echo $key->TIPE_NAMA;?>"><?php echo $key->TEKS ." / " . $key->NOTIF_TIME;?></span> <?php echo substr($key->NOTIF_ACTIVITY,0);?> { <i>dikirim oleh <?php echo $key->USERNAME;?></i> }.</td>
+                                            <td><button class="btn btn-xs btn-flat <?php echo $key->NOTIF_READ == 0 ? "btn-primary" : "btn-default disabled"; ?>" onclick="modalbacasatu('<?php echo $key->NOTIF_ID?>', '<?php echo addslashes($key->NOTIF_TIME)?>', '<?php echo addslashes($key->USERNAME)?>')"><i class="fa fa-check"></i> Baca</button></td>
                                         </tr>
                                         <?php } } else {  ?>
                                         <tr>

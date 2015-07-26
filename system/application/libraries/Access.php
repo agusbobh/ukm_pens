@@ -36,11 +36,11 @@ class Access {
         //die();
         if ($result) {
             $password = sha1($password);
-            if ($password == $result->USER_PASS) {
+            if ($password == $result->PASSWORD) {
                     $this->CI->session->set_userdata('ukm_user_id', $result->USER_ID);
-                    $this->CI->session->set_userdata('ukm_username', $result->USER_NAME);
+                    $this->CI->session->set_userdata('ukm_username', $result->USERNAME);
                     $this->CI->session->set_userdata('ukm_role', $result->ROLENAME);
-                    $this->CI->session->set_userdata('ukm_usermail', $result->USER_MAIL);
+                    $this->CI->session->set_userdata('ukm_usermail', $result->EMAIL);
                     $this->CI->session->set_userdata('ukm_role_id', $result->USER_ROLE);
                     $this->CI->session->set_userdata('ukm_ukmid', $result->UKM_ID);
                     $this->CI->session->set_userdata('ukm_name', $result->UKM_NAME);
@@ -49,12 +49,12 @@ class Access {
                         'user_status' => "1",
                     );
                     $datalog = array(
-                        'log_text' => "User " . $result->USER_NAME . " LOGIN di SIM UKM",
+                        'log_text' => "User " . $result->USERNAME . " LOGIN di SIM UKM",
                         'user_id' => $result->USER_ID
                     );
 
                     $log_id = $result->USER_ID;
-                    $log_teks = 'Akun User ' . $result->USER_NAME . ' telah LOGIN di SIM UKM';
+                    $log_teks = 'Akun User ' . $result->USERNAME . ' telah LOGIN di SIM UKM';
                     //$this->user_model->update($result->USER_ID, $data);
                     $this->user_model->update_status($result->USER_ID, 1);
                     $this->log_model->insert($log_id, $log_teks);

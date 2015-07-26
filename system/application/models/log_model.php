@@ -43,17 +43,9 @@ class Log_model extends Model {
     }
 
     function get_log() {
-        /*$this->db->select('log.*, user_sim.user_name AS user_name');
-        $this->db->from('log');
-        $this->db->join('user_sim', 'log.user_id = user_sim.user_id');
-        $this->db->where($parameter);
-        $this->db->order_by("log_time","desc");
-        $query = $this->db->get();
-        //return (count($query->num_rows()) > 0 ? $query->result() : NULL);
-        return $query;
-        */
-        $sql = "SELECT log.*,user_sim.user_name AS user_name FROM log
+        $sql = "SELECT log.*,pegawai.username AS username FROM log
                 JOIN user_sim ON log.user_id = user_sim.user_id
+                JOIN pegawai ON pegawai.nomor = user_sim.user_id
                 ORDER BY log_time DESC";
         $query = $this->db->query($sql);
         return $query;
@@ -61,26 +53,11 @@ class Log_model extends Model {
 
     function get_total($parameter) {
         if(!empty($parameter)){
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('log');
-            // $this->db->where($parameter);
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM log
                     WHERE  log_id = ".$parameter." ";
             $query = $this->db->query($sql);
             return $query;
         }else{
-            // $this->db->select('count(*) AS Total');
-            // $this->db->from('log');
-            // $query = $this->db->get();
-            // foreach($query->result() as $row){
-            //   return $row->Total;
-            // }
-            //return (count($query->row_array()) > 0 ? $query->row()->Total : 0);
             $sql = "SELECT count(*) AS Total FROM log";
             $query = $this->db->query($sql);
             return $query;

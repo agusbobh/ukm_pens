@@ -146,7 +146,7 @@ class Login extends Controller {
         $pesan = "";
 
         $data = array(
-            'user_name' => $uname
+            'username' => $uname
         );
         $cek = $this->model_user->reset($data);
         if(!is_null($cek)) {

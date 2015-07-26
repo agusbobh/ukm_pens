@@ -42,7 +42,7 @@
                                           foreach ($datalog as $key) {
                                         ?>
                                         <tr>
-                                            <td><span class="label label-info"><?php echo $key->LOG_TIME;?></span> <?php echo $key->LOG_TEXT;?> { <i>user: <?php echo $key->USER_NAME;?></i> }.</td>
+                                            <td><span class="label label-info"><?php echo $key->LOG_TIME;?></span> <?php echo $key->LOG_TEXT;?> { <i>user: <?php echo $key->USERNAME;?></i> }.</td>
                                         </tr>
                                         <?php } } else {  ?>
                                         <tr>

@@ -17,6 +17,24 @@ class Data extends MY_Controller {
 
     }
 
+    function tandai() {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('tandai-id', 'Data ID','required|strip_tags');
+
+        if($this->form_validation->run() == TRUE){
+            $id = addslashes($this->input->post('tandai-id', TRUE));
+            $pesan = 'Data ' . addslashes($this->input->post('tandai-nama', TRUE)) . ' ';
+            $this->data_model->update_tandai_file($id);
+            $status['status'] = 1;
+            $status['pesan'] = $pesan . 'berhasil ditandai';
+        }else{
+            $status['status'] = 0;
+            $status['pesan'] = validation_errors();
+        }
+
+        echo json_encode($status);
+    }
+
     function doupload(){
         $config['upload_path']          = './uploads/';
         $config['allowed_types']        = 'doc|docx|rtf|xls|xlsx|pdf';

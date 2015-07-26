@@ -145,28 +145,8 @@
                                       <div class="form-group">
 
                                           <div class="input-group">
-                                              <span class="input-group-addon">User :</span>
-                                              <select class="form-control" id="tambah-pembina" name="tambah-pembina">
-                                                      <option value="0">Tidak Ada</option>
-                                                  <?php
-                                                  if(!empty($listuser)) {
-                                                    foreach ($listuser as $key )
-                                                    {
-                                                  ?>
-                                                      <option value="<?php echo $key->USER_ID;?>"><?php echo $key->USER_NAME;?></option>
-                                                  <?php
-                                                    }
-                                                  }
-                                                  ?>
-                                              </select>
-
-                                          </div><!-- /.input group -->
-                                      </div>
-                                      <div class="form-group">
-
-                                          <div class="input-group">
                                               <span class="input-group-addon">Nama Pembina :</span>
-                                              <select class="form-control" id="tambah-user" name="tambah-pembina">
+                                              <select class="form-control" id="tambah-pembina" name="tambah-pembina">
                                                   <option value="Tidak Ada">Tidak Ada</option>
                                                   <?php
                                                   if(!empty($listpegawai)) {
@@ -264,25 +244,6 @@
                                         <input type="email" class="form-control" id="edit-kontak" name="edit-kontak" placeholder="Kontak untuk dihubungi" />
                                       </div><!-- /.input group -->
                                     </div>
-
-                                    <div class="form-group">
-
-                                      <div class="input-group">
-                                        <span class="input-group-addon">User    :</span>
-                                        <select class="form-control" id="edit-user" name="edit-user">
-                                                  <?php
-                                                  if(!empty($listuser)) {
-                                                    foreach ($listuser as $key )
-                                                    { ?>
-                                                      <option value="<?php echo $key->USER_ID;?>"><?php echo $key->USER_NAME;?></option>
-                                                  <?php
-                                                    }
-                                                  }
-                                                  ?>
-                                          </select>
-
-                                        </div><!-- /.input group -->
-                                      </div>
                                       <div class="form-group">
 
                                           <div class="input-group">
@@ -369,20 +330,22 @@
       </div> <!-- /.modal-password-->
 
         <script type="text/javascript">
-            function modaledit(id, user, nama, kontak, tgl){
+            function modaledit(id, nama, kontak, pembina, tgl){
                 $('#form-pesan-edit').html('');
                 $('#edit-id').val('');
                 $('#edit-nama').val('');
                 $('#edit-kontak').val('');
+                $('#edit-pembina').val('');
                 $('#edit-tempnama').val('');
                 $('#edit-tgl').val('');
                 $('#modal-edit').modal('show');
                 $('#edit-id').val(id);
                 $('#edit-nama').val(nama);
                 $('#edit-kontak').val(kontak);
+                $('#edit-pembina').val(pembina);
                 $('#edit-tempnama').val(nama);
-                $("#edit-user option").filter(function(){
-                    return ( ($(this).val() == user) || ($(this).text() == user) );
+                $("#edit-pembina option").filter(function(){
+                    return ( ($(this).val() == pembina) || ($(this).text() == pembina) );
                 }).prop('selected', true);
                 $('#edit-tgl').val(tgl);
             }
